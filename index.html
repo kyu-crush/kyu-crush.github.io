@@ -1,4 +1,653 @@
 <!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Kyu Crush: bright pop hub metadata -->
+    <meta
+      name="description"
+      content="Kyu Crush — main links, daily glow, teasers, socials, and closer updates."
+    />
+    <meta id="themeColorMeta" name="theme-color" content="#fff3d6" />
+
+    <meta property="og:title" content="Kyu Crush" />
+    <meta
+      property="og:description"
+      content="🍒 Sweet looks. Loud energy. Good trouble."
+    />
+    <meta property="og:url" content="https://kyuafterdark.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/kyu-crush.png"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kyu Crush" />
+    <meta
+      name="twitter:description"
+      content="🍒 Sweet looks. Loud energy. Good trouble."
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/kyu-crush.png"
+    />
+
+    <link rel="canonical" href="https://kyuafterdark.github.io/" />
+
+    <title>Kyu Crush | Sweet Links</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/kyu-crush.png"
+    />
+
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("kyu_crush_theme") || "light";
+        document.documentElement.dataset.theme = savedTheme;
+      })();
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z02Y2MPX8D"></script>
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+      gtag("config", "G-Z02Y2MPX8D");
+
+      function trackClick(linkName, linkUrl) {
+        gtag("event", "outbound_click", {
+          brand: "kyu_crush",
+          link_name: linkName,
+          link_url: linkUrl
+        });
+      }
+
+      function updateThemeMeta(theme) {
+        const themeColorMeta = document.getElementById("themeColorMeta");
+
+        if (!themeColorMeta) return;
+
+        themeColorMeta.setAttribute(
+          "content",
+          theme === "dark" ? "#050505" : "#fff3d6"
+        );
+      }
+
+      function setTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem("kyu_crush_theme", theme);
+        updateThemeMeta(theme);
+
+        const icon = document.querySelector(".themeIcon");
+        const label = document.querySelector(".themeLabel");
+
+        if (!icon || !label) return;
+
+        if (theme === "dark") {
+          icon.textContent = "☀️";
+          label.textContent = "Light";
+        } else {
+          icon.textContent = "🌙";
+          label.textContent = "Dark";
+        }
+      }
+
+      function toggleTheme() {
+        const currentTheme = document.documentElement.dataset.theme || "light";
+        setTheme(currentTheme === "dark" ? "light" : "dark");
+      }
+
+      window.addEventListener("DOMContentLoaded", function () {
+        setTheme(document.documentElement.dataset.theme || "light");
+      });
+    </script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      :root {
+        --cream: #fff3d6;
+        --vanilla: #ffe8a3;
+        --peach: #ff9f7a;
+        --bubblegum: #ff4fa3;
+        --cherry: #ff3b5f;
+        --sky: #72c7ff;
+        --mint: #8ff0c6;
+        --choco: #3a2418;
+        --white: #fffaf0;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at 18% 10%, rgba(255, 232, 163, 0.82) 0%, transparent 27%),
+          radial-gradient(circle at 88% 15%, rgba(255, 79, 163, 0.36) 0%, transparent 29%),
+          radial-gradient(circle at 12% 82%, rgba(143, 240, 198, 0.40) 0%, transparent 32%),
+          radial-gradient(circle at 80% 92%, rgba(114, 199, 255, 0.43) 0%, transparent 36%),
+          linear-gradient(135deg, #fff3d6 0%, #ffddea 48%, #cfefff 100%);
+        color: var(--choco);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow-x: hidden;
+        padding: 20px 0;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle, rgba(255, 255, 255, 0.56) 2px, transparent 3px);
+        background-size: 34px 34px;
+        opacity: 0.36;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        width: 360px;
+        height: 360px;
+        right: -120px;
+        top: -120px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, rgba(255, 79, 163, 0.20) 0%, transparent 65%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 430px;
+        padding: 24px;
+      }
+
+      .card {
+        position: relative;
+        background: rgba(255, 250, 240, 0.88);
+        border: 2px solid rgba(255, 255, 255, 0.76);
+        border-radius: 30px;
+        padding: 42px 22px 24px;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.46) inset,
+          0 18px 44px rgba(255, 79, 163, 0.16),
+          0 12px 30px rgba(58, 36, 24, 0.11);
+        backdrop-filter: blur(13px);
+        -webkit-backdrop-filter: blur(13px);
+      }
+
+      .themeToggle {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 3;
+        border: 2px solid rgba(255, 255, 255, 0.72);
+        background: rgba(255, 255, 255, 0.50);
+        color: var(--choco);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 8px 18px rgba(58, 36, 24, 0.12);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition:
+          transform 0.18s ease,
+          background 0.22s ease,
+          border-color 0.22s ease;
+      }
+
+      .themeToggle:hover {
+        transform: translateY(-1px);
+      }
+
+      .profile {
+        width: 124px;
+        height: 124px;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 18px;
+        border: 4px solid var(--white);
+        box-shadow:
+          0 0 0 5px rgba(255, 79, 163, 0.16),
+          0 0 0 10px rgba(255, 232, 163, 0.30),
+          0 14px 28px rgba(58, 36, 24, 0.18);
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 42px;
+        line-height: 1.02;
+        font-weight: 900;
+        letter-spacing: -0.055em;
+        color: var(--choco);
+        text-shadow:
+          2px 3px 0 rgba(255, 232, 163, 0.92),
+          -1px -1px 0 rgba(255, 255, 255, 0.85);
+      }
+
+      .bio {
+        margin: 0 auto 8px;
+        color: rgba(58, 36, 24, 0.78);
+        font-size: 15px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .trust {
+        margin: 0 auto 22px;
+        color: rgba(58, 36, 24, 0.54);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+
+      .btn {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 58px;
+        padding: 17px 18px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 900;
+        line-height: 1.2;
+        letter-spacing: 0.01em;
+        color: white;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.58);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+          0 10px 22px rgba(58, 36, 24, 0.16);
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease,
+          box-shadow 0.22s ease,
+          border-color 0.22s ease,
+          background 0.22s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px) scale(1.018);
+        opacity: 1;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+          0 14px 26px rgba(58, 36, 24, 0.19);
+      }
+
+      .btn:active {
+        transform: scale(0.985);
+      }
+
+      .btn:focus-visible,
+      .themeToggle:focus-visible {
+        outline: 3px solid rgba(58, 36, 24, 0.90);
+        outline-offset: 3px;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -110%;
+        width: 42%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.42),
+          transparent
+        );
+        transform: skewX(-20deg);
+      }
+
+      .btn:hover::before {
+        left: 125%;
+        transition: left 0.7s ease;
+      }
+
+      .btnText {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.1;
+      }
+
+      .btnTitle {
+        font-size: 17px;
+        font-weight: 900;
+      }
+
+      .btnSub {
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        opacity: 0.78;
+        text-transform: uppercase;
+      }
+
+      .mainProfile {
+        background: linear-gradient(135deg, #ff4fa3, #ff3b5f);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+          0 0 30px rgba(255, 79, 163, 0.28),
+          0 12px 24px rgba(58, 36, 24, 0.18);
+      }
+
+      .mainProfile:hover {
+        transform: translateY(-2px) scale(1.03);
+      }
+
+      .instagram {
+        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
+      }
+
+      .twitter {
+        background: linear-gradient(135deg, #3a2418, #7a4a2a);
+      }
+
+      .telegram {
+        background: linear-gradient(135deg, #72c7ff, #8ff0c6);
+        color: var(--choco);
+      }
+
+      .footer {
+        font-size: 12px;
+        font-weight: 800;
+        color: rgba(58, 36, 24, 0.46);
+        margin-top: 20px;
+      }
+
+      html[data-theme="dark"] body {
+        background:
+          radial-gradient(circle at 50% 0%, rgba(120, 42, 255, 0.18) 0%, rgba(120, 42, 255, 0.05) 28%, transparent 52%),
+          radial-gradient(circle at 50% 100%, rgba(225, 48, 108, 0.16) 0%, rgba(225, 48, 108, 0.05) 30%, transparent 56%),
+          #050505;
+        color: white;
+      }
+
+      html[data-theme="dark"] body::before {
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        background-size: 38px 38px;
+        opacity: 1;
+        mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+      }
+
+      html[data-theme="dark"] body::after {
+        width: auto;
+        height: auto;
+        right: 0;
+        top: 0;
+        border-radius: 0;
+        background:
+          radial-gradient(circle at top center, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 14%, transparent 38%);
+      }
+
+      html[data-theme="dark"] .card {
+        background: rgba(14, 14, 18, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+          0 12px 42px rgba(0, 0, 0, 0.48),
+          0 0 54px rgba(156, 66, 255, 0.10),
+          0 0 34px rgba(225, 48, 108, 0.08);
+      }
+
+      html[data-theme="dark"] .themeToggle {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: white;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      html[data-theme="dark"] .profile {
+        border: 2px solid rgba(255, 255, 255, 0.13);
+        box-shadow:
+          0 0 0 4px rgba(255, 255, 255, 0.03),
+          0 0 30px rgba(156, 66, 255, 0.16),
+          0 0 20px rgba(225, 48, 108, 0.10);
+      }
+
+      html[data-theme="dark"] h1 {
+        color: white;
+        text-shadow: none;
+      }
+
+      html[data-theme="dark"] .bio {
+        color: rgba(255, 255, 255, 0.74);
+      }
+
+      html[data-theme="dark"] .trust {
+        color: rgba(255, 255, 255, 0.46);
+      }
+
+      html[data-theme="dark"] .footer {
+        color: rgba(255, 255, 255, 0.48);
+      }
+
+      html[data-theme="dark"] .btn {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+          0 8px 22px rgba(0, 0, 0, 0.35);
+      }
+
+      html[data-theme="dark"] .mainProfile {
+        background: linear-gradient(135deg, #ff8c00, #ff4f00);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.07) inset,
+          0 0 32px rgba(255, 140, 0, 0.42),
+          0 10px 24px rgba(0, 0, 0, 0.34);
+      }
+
+      html[data-theme="dark"] .instagram {
+        background: linear-gradient(135deg, #e1306c, #8f1d7a);
+        border: 1px solid rgba(255, 255, 255, 0.20);
+      }
+
+      html[data-theme="dark"] .twitter {
+        background: linear-gradient(135deg, #2a2a2a, #111111);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+      }
+
+      html[data-theme="dark"] .twitter:hover {
+        background: linear-gradient(135deg, #343434, #1d1d1d);
+        border-color: rgba(255, 255, 255, 0.34);
+      }
+
+      html[data-theme="dark"] .telegram {
+        background: linear-gradient(135deg, #4f6f8d, #2f3d4b);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+      }
+
+      html[data-theme="dark"] .telegram:hover {
+        background: linear-gradient(135deg, #5b7d9d, #384858);
+        border-color: rgba(255, 255, 255, 0.30);
+      }
+
+      html[data-theme="dark"] .btn:focus-visible,
+      html[data-theme="dark"] .themeToggle:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.95);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          align-items: flex-start;
+        }
+
+        .wrap {
+          padding: 16px;
+        }
+
+        .card {
+          padding: 42px 18px 20px;
+          border-radius: 26px;
+        }
+
+        .themeToggle {
+          top: 14px;
+          right: 14px;
+          padding: 7px 11px;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+
+        .bio {
+          font-size: 15px;
+        }
+
+        .btn {
+          min-height: 60px;
+          font-size: 16px;
+          padding: 16px;
+          border-radius: 18px;
+        }
+
+        .links {
+          gap: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <button
+          class="themeToggle"
+          type="button"
+          onclick="toggleTheme()"
+          aria-label="Toggle color mode"
+        >
+          <span class="themeIcon">🌙</span>
+          <span class="themeLabel">Dark</span>
+        </button>
+
+        <img
+          class="profile"
+          src="https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/kyu-crush.png"
+          alt="Kyu Crush profile picture"
+        />
+
+        <h1>Kyu Crush</h1>
+
+        <p class="bio">🍒 Sweet looks. Loud energy. Good trouble.</p>
+        <p class="trust">daily glow • cute chaos • crush mode</p>
+
+        <div class="links">
+          <!-- Replace placeholder URLs with your real profile links before publishing. -->
+          <a
+            href="https://xhamster.com/users/YOUR_NEW_HANDLE"
+            class="btn mainProfile"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open main Kyu Crush profile"
+            onclick="trackClick('main_profile', 'https://xhamster.com/users/YOUR_NEW_HANDLE')"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Watch Kyu Crush 🍒</span>
+              <span class="btnSub">main profile</span>
+            </span>
+          </a>
+
+          <a
+            href="https://www.instagram.com/YOUR_NEW_HANDLE/"
+            class="btn instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Instagram"
+            onclick="trackClick('instagram', 'https://www.instagram.com/YOUR_NEW_HANDLE/')"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Instagram ☀️</span>
+              <span class="btnSub">daily glow</span>
+            </span>
+          </a>
+
+          <a
+            href="https://x.com/YOUR_NEW_HANDLE"
+            class="btn twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open X"
+            onclick="trackClick('x', 'https://x.com/YOUR_NEW_HANDLE')"
+          >
+            <span class="btnText">
+              <span class="btnTitle">X / Twitter 💬</span>
+              <span class="btnSub">teasers & updates</span>
+            </span>
+          </a>
+
+          <a
+            href="https://t.me/YOUR_NEW_HANDLE"
+            class="btn telegram"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Telegram"
+            onclick="trackClick('telegram', 'https://t.me/YOUR_NEW_HANDLE')"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Telegram 🔒</span>
+              <span class="btnSub">closer updates</span>
+            </span>
+          </a>
+        </div>
+
+        <p class="footer">Kyu Crush Hub</p>
+      </section>
+    </main>
+  </body>
+</html><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
