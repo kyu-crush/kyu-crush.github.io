@@ -45,6 +45,11 @@
     />
 
     <script>
+      const profilePictures = {
+        light: "lightpic",
+        dark: "darkpic"
+      };
+
       (function () {
         const savedTheme = localStorage.getItem("kyu_crush_theme") || "light";
         document.documentElement.dataset.theme = savedTheme;
@@ -82,10 +87,20 @@
         );
       }
 
+      function updateProfilePicture(theme) {
+        const profileImage = document.getElementById("profileImage");
+
+        if (!profileImage) return;
+
+        profileImage.src =
+          theme === "dark" ? profilePictures.dark : profilePictures.light;
+      }
+
       function setTheme(theme) {
         document.documentElement.dataset.theme = theme;
         localStorage.setItem("kyu_crush_theme", theme);
         updateThemeMeta(theme);
+        updateProfilePicture(theme);
 
         const icon = document.querySelector(".themeIcon");
         const label = document.querySelector(".themeLabel");
@@ -574,8 +589,9 @@
         </button>
 
         <img
+          id="profileImage"
           class="profile"
-          src="https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/kyu-crush.png"
+          src="lightpic"
           alt="Kyu Crush profile picture"
         />
 
@@ -585,7 +601,6 @@
         <p class="trust">sunny mood • soft tease • sweet energy</p>
 
         <div class="links">
-          <!-- Replace placeholder URLs with your real profile links before publishing. -->
           <a
             href="https://xhamster.com/users/YOUR_NEW_HANDLE"
             class="btn mainProfile"
