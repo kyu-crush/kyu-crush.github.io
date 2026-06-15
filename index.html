@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Kyu Crush: bright pop hub metadata -->
     <meta
       name="description"
       content="Kyu Crush — main links, daily glow, teasers, socials, and closer updates."
     />
-    <meta id="themeColorMeta" name="theme-color" content="#ead2ad" />
+    <meta id="themeColorMeta" name="theme-color" content="#b78978" />
 
     <meta property="og:title" content="Kyu Crush" />
     <meta
@@ -78,7 +77,7 @@
 
         themeColorMeta.setAttribute(
           "content",
-          theme === "dark" ? "#050505" : "#ead2ad"
+          theme === "dark" ? "#050505" : "#b78978"
         );
       }
 
@@ -121,15 +120,16 @@
       }
 
       :root {
-        --cream: #ead2ad;
-        --vanilla: #ffcc7d;
-        --peach: #ff8e76;
-        --bubblegum: #e15486;
-        --cherry: #f24f8f;
-        --sky: #5ba8cd;
-        --mint: #7edbc3;
+        --cream: #f7dfc6;
+        --vanilla: #f5c777;
+        --peach: #ff806f;
+        --bubblegum: #e84f8f;
+        --cherry: #f04375;
+        --sky: #5da4c5;
+        --mint: #77d0b8;
         --choco: #3a2418;
-        --white: #fff1de;
+        --coffee: #5b3828;
+        --white: #fff0dc;
       }
 
       body {
@@ -137,10 +137,10 @@
         min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
         background:
-          radial-gradient(circle at 18% 16%, rgba(255, 204, 125, 0.34) 0%, transparent 28%),
-          radial-gradient(circle at 84% 20%, rgba(225, 84, 134, 0.18) 0%, transparent 30%),
-          radial-gradient(circle at 78% 86%, rgba(91, 168, 205, 0.20) 0%, transparent 34%),
-          linear-gradient(135deg, #ead2ad 0%, #dfbfc5 52%, #aac7d8 100%);
+          radial-gradient(circle at 18% 18%, rgba(245, 199, 119, 0.34) 0%, transparent 28%),
+          radial-gradient(circle at 78% 22%, rgba(232, 79, 143, 0.22) 0%, transparent 30%),
+          radial-gradient(circle at 80% 86%, rgba(93, 164, 197, 0.26) 0%, transparent 34%),
+          linear-gradient(135deg, #b78978 0%, #a5798e 46%, #6f96aa 100%);
         color: var(--choco);
         display: flex;
         justify-content: center;
@@ -156,9 +156,10 @@
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(circle, rgba(255, 255, 255, 0.28) 1px, transparent 2px);
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
         background-size: 42px 42px;
-        opacity: 0.14;
+        opacity: 0.42;
         pointer-events: none;
         z-index: 0;
       }
@@ -166,13 +167,10 @@
       body::after {
         content: "";
         position: fixed;
-        width: 320px;
-        height: 320px;
-        right: -135px;
-        top: -135px;
-        border-radius: 50%;
+        inset: 0;
         background:
-          radial-gradient(circle, rgba(255, 120, 160, 0.09) 0%, transparent 70%);
+          radial-gradient(circle at 50% 42%, rgba(255, 241, 222, 0.22) 0%, transparent 34%),
+          radial-gradient(circle at 50% 100%, rgba(58, 36, 24, 0.20) 0%, transparent 42%);
         pointer-events: none;
         z-index: 0;
       }
@@ -187,16 +185,16 @@
 
       .card {
         position: relative;
-        background: rgba(255, 241, 222, 0.90);
-        border: 2px solid rgba(255, 255, 255, 0.50);
+        background: rgba(255, 240, 220, 0.88);
+        border: 2px solid rgba(255, 255, 255, 0.48);
         border-radius: 30px;
         padding: 42px 22px 24px;
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.24) inset,
-          0 20px 42px rgba(78, 43, 28, 0.18),
-          0 10px 26px rgba(170, 80, 110, 0.12);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+          0 24px 52px rgba(54, 31, 22, 0.28),
+          0 10px 28px rgba(232, 79, 143, 0.12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
       }
 
       .themeToggle {
@@ -204,8 +202,8 @@
         top: 16px;
         right: 16px;
         z-index: 3;
-        border: 2px solid rgba(255, 255, 255, 0.72);
-        background: rgba(255, 255, 255, 0.50);
+        border: 2px solid rgba(255, 255, 255, 0.56);
+        background: rgba(255, 255, 255, 0.44);
         color: var(--choco);
         border-radius: 999px;
         padding: 8px 12px;
@@ -215,7 +213,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        box-shadow: 0 8px 18px rgba(58, 36, 24, 0.12);
+        box-shadow: 0 8px 18px rgba(58, 36, 24, 0.16);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         transition:
@@ -237,9 +235,9 @@
         margin: 0 auto 18px;
         border: 4px solid var(--white);
         box-shadow:
-          0 0 0 5px rgba(242, 79, 143, 0.13),
-          0 0 0 10px rgba(255, 204, 125, 0.22),
-          0 14px 28px rgba(58, 36, 24, 0.15);
+          0 0 0 5px rgba(240, 67, 117, 0.16),
+          0 0 0 10px rgba(245, 199, 119, 0.22),
+          0 15px 28px rgba(58, 36, 24, 0.22);
       }
 
       h1 {
@@ -250,13 +248,13 @@
         letter-spacing: -0.055em;
         color: var(--choco);
         text-shadow:
-          1px 2px 0 rgba(255, 204, 125, 0.58),
-          -1px -1px 0 rgba(255, 255, 255, 0.52);
+          1px 2px 0 rgba(245, 199, 119, 0.54),
+          -1px -1px 0 rgba(255, 255, 255, 0.44);
       }
 
       .bio {
         margin: 0 auto 8px;
-        color: rgba(58, 36, 24, 0.78);
+        color: rgba(58, 36, 24, 0.82);
         font-size: 15px;
         line-height: 1.45;
         font-weight: 700;
@@ -264,7 +262,7 @@
 
       .trust {
         margin: 0 auto 22px;
-        color: rgba(58, 36, 24, 0.54);
+        color: rgba(58, 36, 24, 0.58);
         font-size: 13px;
         font-weight: 700;
       }
@@ -296,10 +294,10 @@
         letter-spacing: 0.01em;
         color: white;
         text-align: center;
-        border: 2px solid rgba(255, 255, 255, 0.58);
+        border: 2px solid rgba(255, 255, 255, 0.50);
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-          0 10px 22px rgba(58, 36, 24, 0.15);
+          0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+          0 10px 22px rgba(58, 36, 24, 0.20);
         transition:
           transform 0.18s ease,
           opacity 0.18s ease,
@@ -312,8 +310,8 @@
         transform: translateY(-2px) scale(1.018);
         opacity: 1;
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
-          0 14px 26px rgba(58, 36, 24, 0.18);
+          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+          0 14px 26px rgba(58, 36, 24, 0.22);
       }
 
       .btn:active {
@@ -336,7 +334,7 @@
         background: linear-gradient(
           120deg,
           transparent,
-          rgba(255, 255, 255, 0.42),
+          rgba(255, 255, 255, 0.35),
           transparent
         );
         transform: skewX(-20deg);
@@ -369,11 +367,7 @@
       }
 
       .mainProfile {
-        background: linear-gradient(135deg, #f24f8f, #ff5f6f);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.14) inset,
-          0 0 24px rgba(242, 79, 143, 0.20),
-          0 12px 22px rgba(58, 36, 24, 0.14);
+        background: linear-gradient(135deg, #e84f8f, #f04375);
       }
 
       .mainProfile:hover {
@@ -381,7 +375,7 @@
       }
 
       .instagram {
-        background: linear-gradient(135deg, #ff8e76, #ef5b9c);
+        background: linear-gradient(135deg, #ff806f, #e84f8f);
       }
 
       .twitter {
@@ -389,14 +383,14 @@
       }
 
       .telegram {
-        background: linear-gradient(135deg, #69b8df, #7edbc3);
+        background: linear-gradient(135deg, #5da4c5, #77d0b8);
         color: var(--choco);
       }
 
       .footer {
         font-size: 12px;
         font-weight: 800;
-        color: rgba(58, 36, 24, 0.46);
+        color: rgba(58, 36, 24, 0.48);
         margin-top: 20px;
       }
 
@@ -418,11 +412,6 @@
       }
 
       html[data-theme="dark"] body::after {
-        width: auto;
-        height: auto;
-        right: 0;
-        top: 0;
-        border-radius: 0;
         background:
           radial-gradient(circle at top center, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 14%, transparent 38%);
       }
