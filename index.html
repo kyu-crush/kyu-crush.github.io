@@ -231,7 +231,10 @@
 
         dots.forEach(function (dot, index) {
           dot.classList.toggle("active", index === activeIndex);
-          dot.setAttribute("aria-current", index === activeIndex ? "true" : "false");
+          dot.setAttribute(
+            "aria-current",
+            index === activeIndex ? "true" : "false"
+          );
         });
       }
 
@@ -354,7 +357,7 @@
       }
 
       .panel {
-        flex: 0 0 calc(100% - 42px);
+        flex: 0 0 100%;
         min-width: 0;
         scroll-snap-align: start;
       }
@@ -377,10 +380,10 @@
         content: "secret 🍒";
         position: absolute;
         top: 50%;
-        right: -18px;
+        right: 10px;
         transform: translateY(-50%) rotate(90deg);
         transform-origin: center;
-        color: rgba(58, 36, 24, 0.54);
+        color: rgba(58, 36, 24, 0.38);
         font-size: 11px;
         font-weight: 900;
         letter-spacing: 0.08em;
@@ -746,7 +749,7 @@
       }
 
       html[data-theme="dark"] .mainCard::after {
-        color: rgba(255, 255, 255, 0.42);
+        color: rgba(255, 255, 255, 0.34);
       }
 
       html[data-theme="dark"] .themeToggle {
@@ -886,7 +889,7 @@
         }
 
         .panel {
-          flex-basis: calc(100% - 38px);
+          flex-basis: 100%;
         }
 
         .card {
@@ -928,7 +931,7 @@
         }
 
         .mainCard::after {
-          right: -17px;
+          right: 8px;
           font-size: 10px;
         }
       }
