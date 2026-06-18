@@ -34,6 +34,9 @@
     <link rel="icon" type="image/png" href="favicon.png" />
 
     <script>
+      const GA_MEASUREMENT_ID = "G-Z02Y2MPX8D";
+      const CONSENT_STORAGE_KEY = "kyu_crush_analytics_consent";
+
       const profilePictures = {
         light: "1x1_lightpic.jpg",
         dark: "1x1_darkpic.jpg"
@@ -82,11 +85,19 @@
         }
       };
 
+      let analyticsEnabled = false;
+      let analyticsInitialized = false;
       let secretAreaTracked = false;
       let swipeAttemptTracked = false;
       let currentTrackedTheme = null;
       let themeStartedAt = Date.now();
       let themeLastSentAt = Date.now();
+
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
 
       function buildTrackedUrl(key) {
         const baseUrl = baseLinks[key];
@@ -104,26 +115,83 @@
         return url.toString();
       }
 
-      (function () {
-        const savedTheme = localStorage.getItem("kyu_crush_theme") || "light";
-        document.documentElement.dataset.theme = savedTheme;
-      })();
-    </script>
+      function loadGoogleAnalytics() {
+        if (analyticsInitialized) return;
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z02Y2MPX8D"></script>
+        analyticsInitialized = true;
+        analyticsEnabled = true;
 
-    <script>
-      window.dataLayer = window.dataLayer || [];
+        const gaScript = document.createElement("script");
+        gaScript.async = true;
+        gaScript.src =
+          "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
+        document.head.appendChild(gaScript);
 
-      function gtag() {
-        dataLayer.push(arguments);
+        gtag("js", new Date());
+        gtag("config", GA_MEASUREMENT_ID, {
+          anonymize_ip: true
+        });
       }
 
-      gtag("js", new Date());
-      gtag("config", "G-Z02Y2MPX8D");
+      function getAnalyticsConsent() {
+        return localStorage.getItem(CONSENT_STORAGE_KEY);
+      }
 
-      function trackEvent(eventName, eventParams) {
-        if (typeof gtag !== "function") return;
+      function setAnalyticsConsent(value) {
+        localStorage.setItem(CONSENT_STORAGE_KEY, value);
+      }
+
+      function acceptAnalytics() {
+        setAnalyticsConsent("accepted");
+        hideCookieBanner();
+        loadGoogleAnalytics();
+
+        const currentTheme = document.documentElement.dataset.theme || "light";
+        initializeThemeTracking(currentTheme);
+        setupButtonImpressionTracking();
+        updateSwipeState();
+
+        trackEvent("analytics_consent_update", {
+          consent_status: "accepted"
+        });
+      }
+
+      function rejectAnalytics() {
+        setAnalyticsConsent("rejected");
+        hideCookieBanner();
+        analyticsEnabled = false;
+      }
+
+      function showCookieBannerIfNeeded() {
+        const consent = getAnalyticsConsent();
+        const banner = document.getElementById("cookieBanner");
+
+        if (!banner) return;
+
+        if (consent === "accepted") {
+          banner.hidden = true;
+          loadGoogleAnalytics();
+          return;
+        }
+
+        if (consent === "rejected") {
+          banner.hidden = true;
+          return;
+        }
+
+        banner.hidden = false;
+      }
+
+      function hideCookieBanner() {
+        const banner = document.getElementById("cookieBanner");
+
+        if (!banner) return;
+
+        banner.hidden = true;
+      }
+
+      function trackEvent(eventName, eventParams = {}) {
+        if (!analyticsEnabled || typeof gtag !== "function") return;
 
         gtag("event", eventName, {
           brand: "kyu_crush",
@@ -212,6 +280,8 @@
       }
 
       function initializeThemeTracking(theme) {
+        if (!analyticsEnabled) return;
+
         resetThemeTimer(theme);
         trackThemeView(theme);
       }
@@ -243,7 +313,7 @@
       function setupButtonImpressionTracking() {
         const buttons = document.querySelectorAll("[data-link-key]");
 
-        if (!("IntersectionObserver" in window)) return;
+        if (!analyticsEnabled || !("IntersectionObserver" in window)) return;
 
         const seenButtons = new Set();
 
@@ -378,6 +448,34 @@
         });
       }
 
+      function openLegalPanel(panelName) {
+        const legalOverlay = document.getElementById("legalOverlay");
+        const panels = document.querySelectorAll(".legalPanel");
+
+        if (!legalOverlay) return;
+
+        panels.forEach(function (panel) {
+          panel.hidden = panel.dataset.legalPanel !== panelName;
+        });
+
+        legalOverlay.hidden = false;
+        document.body.classList.add("noScroll");
+      }
+
+      function closeLegalPanel() {
+        const legalOverlay = document.getElementById("legalOverlay");
+
+        if (!legalOverlay) return;
+
+        legalOverlay.hidden = true;
+        document.body.classList.remove("noScroll");
+      }
+
+      (function () {
+        const savedTheme = localStorage.getItem("kyu_crush_theme") || "light";
+        document.documentElement.dataset.theme = savedTheme;
+      })();
+
       window.addEventListener("DOMContentLoaded", function () {
         const initialTheme = document.documentElement.dataset.theme || "light";
 
@@ -385,9 +483,16 @@
           trackChange: false
         });
 
-        initializeThemeTracking(initialTheme);
         applyTrackedLinks();
-        setupButtonImpressionTracking();
+        showCookieBannerIfNeeded();
+
+        const consent = getAnalyticsConsent();
+
+        if (consent === "accepted") {
+          initializeThemeTracking(initialTheme);
+          setupButtonImpressionTracking();
+        }
+
         updateSwipeState();
 
         const shell = document.getElementById("swipeShell");
@@ -397,6 +502,12 @@
             window.requestAnimationFrame(updateSwipeState);
           });
         }
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            closeLegalPanel();
+          }
+        });
       });
 
       document.addEventListener("visibilitychange", function () {
@@ -452,7 +563,11 @@
         text-align: center;
         position: relative;
         overflow-x: hidden;
-        padding: 20px 0;
+        padding: 20px 0 34px;
+      }
+
+      body.noScroll {
+        overflow: hidden;
       }
 
       body::before {
@@ -601,10 +716,19 @@
       }
 
       .trust {
-        margin: 0 auto 22px;
+        margin: 0 auto 10px;
         color: rgba(58, 36, 24, 0.54);
         font-size: 13px;
         font-weight: 700;
+      }
+
+      .ageNote {
+        margin: 0 auto 22px;
+        max-width: 310px;
+        color: rgba(58, 36, 24, 0.48);
+        font-size: 11px;
+        line-height: 1.4;
+        font-weight: 800;
       }
 
       .links {
@@ -660,7 +784,10 @@
 
       .btn:focus-visible,
       .themeToggle:focus-visible,
-      .pageDot:focus-visible {
+      .pageDot:focus-visible,
+      .legalButton:focus-visible,
+      .cookieButton:focus-visible,
+      .legalClose:focus-visible {
         outline: 3px solid rgba(58, 36, 24, 0.90);
         outline-offset: 3px;
       }
@@ -858,6 +985,174 @@
         transform: scale(1.12);
       }
 
+      .legalFooter {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 18px auto 0;
+        color: rgba(58, 36, 24, 0.52);
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .legalButton {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        padding: 2px 3px;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      .legalDivider {
+        opacity: 0.48;
+      }
+
+      .cookieBanner {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        z-index: 20;
+        max-width: 430px;
+        margin: 0 auto;
+        padding: 16px;
+        border-radius: 24px;
+        background: rgba(255, 250, 240, 0.94);
+        border: 2px solid rgba(255, 255, 255, 0.74);
+        color: var(--choco);
+        box-shadow:
+          0 20px 44px rgba(58, 36, 24, 0.20),
+          0 0 0 1px rgba(255, 255, 255, 0.42) inset;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      .cookieTitle {
+        margin: 0 0 6px;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .cookieText {
+        margin: 0 0 12px;
+        font-size: 12px;
+        line-height: 1.45;
+        font-weight: 800;
+        color: rgba(58, 36, 24, 0.64);
+      }
+
+      .cookieActions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .cookieButton {
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 12px;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .cookieAccept {
+        background: linear-gradient(135deg, #ff4fa3, #ff3b5f);
+        color: white;
+      }
+
+      .cookieReject {
+        background: rgba(58, 36, 24, 0.10);
+        color: rgba(58, 36, 24, 0.80);
+      }
+
+      .legalOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      .legalBox {
+        width: 100%;
+        max-width: 520px;
+        max-height: 82vh;
+        overflow: auto;
+        text-align: left;
+        border-radius: 26px;
+        padding: 22px;
+        background: rgba(255, 250, 240, 0.97);
+        color: var(--choco);
+        border: 2px solid rgba(255, 255, 255, 0.72);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+      }
+
+      .legalHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .legalHeader h2 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+
+      .legalClose {
+        border: 0;
+        border-radius: 999px;
+        background: rgba(58, 36, 24, 0.10);
+        color: var(--choco);
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .legalContent h3 {
+        margin: 18px 0 6px;
+        font-size: 15px;
+      }
+
+      .legalContent p,
+      .legalContent li {
+        font-size: 13px;
+        line-height: 1.55;
+        color: rgba(58, 36, 24, 0.72);
+        font-weight: 700;
+      }
+
+      .legalContent ul {
+        padding-left: 18px;
+      }
+
+      .placeholderWarning {
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(255, 59, 95, 0.10);
+        border: 1px solid rgba(255, 59, 95, 0.22);
+        color: rgba(58, 36, 24, 0.86);
+        font-weight: 900;
+      }
+
       html[data-theme="dark"] body {
         background:
           radial-gradient(circle at 50% 0%, rgba(120, 42, 255, 0.18) 0%, rgba(120, 42, 255, 0.05) 28%, transparent 52%),
@@ -919,11 +1214,13 @@
         color: rgba(255, 255, 255, 0.74);
       }
 
-      html[data-theme="dark"] .trust {
+      html[data-theme="dark"] .trust,
+      html[data-theme="dark"] .ageNote {
         color: rgba(255, 255, 255, 0.46);
       }
 
-      html[data-theme="dark"] .footer {
+      html[data-theme="dark"] .footer,
+      html[data-theme="dark"] .legalFooter {
         color: rgba(255, 255, 255, 0.48);
       }
 
@@ -1009,9 +1306,37 @@
         background: #ff8c00;
       }
 
+      html[data-theme="dark"] .cookieBanner,
+      html[data-theme="dark"] .legalBox {
+        background: rgba(14, 14, 18, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: white;
+      }
+
+      html[data-theme="dark"] .cookieText,
+      html[data-theme="dark"] .legalContent p,
+      html[data-theme="dark"] .legalContent li {
+        color: rgba(255, 255, 255, 0.66);
+      }
+
+      html[data-theme="dark"] .cookieReject,
+      html[data-theme="dark"] .legalClose {
+        background: rgba(255, 255, 255, 0.10);
+        color: white;
+      }
+
+      html[data-theme="dark"] .placeholderWarning {
+        background: rgba(255, 59, 95, 0.14);
+        border-color: rgba(255, 59, 95, 0.26);
+        color: rgba(255, 255, 255, 0.86);
+      }
+
       html[data-theme="dark"] .btn:focus-visible,
       html[data-theme="dark"] .themeToggle:focus-visible,
-      html[data-theme="dark"] .pageDot:focus-visible {
+      html[data-theme="dark"] .pageDot:focus-visible,
+      html[data-theme="dark"] .legalButton:focus-visible,
+      html[data-theme="dark"] .cookieButton:focus-visible,
+      html[data-theme="dark"] .legalClose:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.95);
         outline-offset: 3px;
       }
@@ -1071,6 +1396,10 @@
         .secretMini {
           grid-template-columns: 1fr;
         }
+
+        .cookieActions {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -1101,6 +1430,9 @@
 
             <p class="bio">🍒 Your daily little crush.</p>
             <p class="trust">sunny mood • soft tease • sweet energy</p>
+            <p class="ageNote">
+              Some links may contain adult content. 18+ only.
+            </p>
 
             <div class="links">
               <a
@@ -1221,6 +1553,167 @@
         </div>
         <span>Swipe right for secret 🍒</span>
       </div>
+
+      <footer class="legalFooter" aria-label="Legal footer">
+        <button class="legalButton" type="button" onclick="openLegalPanel('imprint')">
+          Imprint
+        </button>
+        <span class="legalDivider">•</span>
+        <button class="legalButton" type="button" onclick="openLegalPanel('privacy')">
+          Privacy
+        </button>
+        <span class="legalDivider">•</span>
+        <span>18+</span>
+      </footer>
     </main>
+
+    <section
+      id="cookieBanner"
+      class="cookieBanner"
+      aria-label="Analytics consent"
+      hidden
+    >
+      <p class="cookieTitle">Tiny analytics? 🍒</p>
+      <p class="cookieText">
+        This hub can use Google Analytics to see which links, themes and secret areas work.
+        Analytics only starts after you accept.
+      </p>
+      <div class="cookieActions">
+        <button class="cookieButton cookieAccept" type="button" onclick="acceptAnalytics()">
+          Accept analytics
+        </button>
+        <button class="cookieButton cookieReject" type="button" onclick="rejectAnalytics()">
+          Reject
+        </button>
+      </div>
+    </section>
+
+    <section
+      id="legalOverlay"
+      class="legalOverlay"
+      aria-label="Legal information"
+      hidden
+      onclick="if (event.target === this) closeLegalPanel()"
+    >
+      <div class="legalBox" role="dialog" aria-modal="true">
+        <div class="legalHeader">
+          <h2>Legal</h2>
+          <button class="legalClose" type="button" onclick="closeLegalPanel()" aria-label="Close">
+            ×
+          </button>
+        </div>
+
+        <article class="legalPanel legalContent" data-legal-panel="imprint" hidden>
+          <h3>Imprint</h3>
+
+          <p class="placeholderWarning">
+            Replace this placeholder before publishing seriously. A fake imprint is worse than no makeup on a corpse.
+          </p>
+
+          <p>
+            Information according to § 5 DDG:
+          </p>
+
+          <p>
+            YOUR LEGAL NAME<br />
+            YOUR STREET AND HOUSE NUMBER<br />
+            YOUR ZIP CODE AND CITY<br />
+            Germany
+          </p>
+
+          <h3>Contact</h3>
+          <p>
+            Email: YOUR EMAIL ADDRESS<br />
+            Optional phone: YOUR PHONE NUMBER
+          </p>
+
+          <h3>Responsibility for content</h3>
+          <p>
+            Responsible person: YOUR LEGAL NAME
+          </p>
+
+          <h3>Note</h3>
+          <p>
+            This page is a personal creator hub. Some outgoing links may lead to adult content.
+            Access is intended for adults only.
+          </p>
+        </article>
+
+        <article class="legalPanel legalContent" data-legal-panel="privacy" hidden>
+          <h3>Privacy Policy</h3>
+
+          <p class="placeholderWarning">
+            Replace this placeholder with a proper privacy policy before relying on it.
+          </p>
+
+          <h3>Controller</h3>
+          <p>
+            YOUR LEGAL NAME<br />
+            YOUR STREET AND HOUSE NUMBER<br />
+            YOUR ZIP CODE AND CITY<br />
+            Email: YOUR EMAIL ADDRESS
+          </p>
+
+          <h3>Hosting</h3>
+          <p>
+            This website is hosted via GitHub Pages. When this website is accessed,
+            technical data such as IP address, browser information, time of access and requested files
+            may be processed by the hosting provider to deliver the website and maintain security.
+          </p>
+
+          <h3>Analytics</h3>
+          <p>
+            This website uses Google Analytics only after consent. Analytics may process technical
+            and usage related information, for example page views, outbound link clicks, theme usage,
+            button impressions, swipe interaction and secret area views.
+          </p>
+
+          <p>
+            Analytics events currently used:
+          </p>
+
+          <ul>
+            <li>theme_view</li>
+            <li>theme_change</li>
+            <li>theme_time</li>
+            <li>button_impression</li>
+            <li>outbound_click</li>
+            <li>swipe_attempt</li>
+            <li>secret_area_view</li>
+            <li>secret_snapchat_click</li>
+          </ul>
+
+          <h3>Consent</h3>
+          <p>
+            Analytics is disabled by default. You can accept or reject analytics in the consent banner.
+            Your choice is stored in local storage on your device.
+          </p>
+
+          <h3>Local storage</h3>
+          <p>
+            This website stores your theme choice and analytics consent choice locally in your browser.
+            This is used to remember your preferences.
+          </p>
+
+          <h3>Outgoing links</h3>
+          <p>
+            This website links to external platforms such as Instagram, X, Telegram, Snapchat and xHamster.
+            Their own privacy policies apply once you leave this website.
+          </p>
+
+          <h3>Your rights</h3>
+          <p>
+            Depending on applicable law, you may have rights to access, rectification, deletion,
+            restriction, objection and data portability. You may also have the right to lodge a complaint
+            with a competent data protection authority.
+          </p>
+
+          <h3>Adult content</h3>
+          <p>
+            Some outgoing links may contain adult content. This website is intended for adults only.
+          </p>
+        </article>
+      </div>
+    </section>
   </body>
-  </html>
+</html>
