@@ -756,10 +756,75 @@
       }
 
       .trust {
-        margin: 0 auto 10px;
+        margin: 0 auto 12px;
         color: rgba(58, 36, 24, 0.54);
         font-size: 13px;
         font-weight: 700;
+      }
+
+      .quickLinks {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+        margin: 0 auto 16px;
+      }
+
+      .quickIcon {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 900;
+        color: white;
+        background: rgba(255, 255, 255, 0.52);
+        border: 2px solid rgba(255, 255, 255, 0.72);
+        box-shadow:
+          0 8px 18px rgba(58, 36, 24, 0.13),
+          0 0 0 1px rgba(255, 255, 255, 0.24) inset;
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease,
+          box-shadow 0.22s ease,
+          border-color 0.22s ease;
+      }
+
+      .quickIcon:hover {
+        transform: translateY(-2px) scale(1.06);
+        opacity: 1;
+        box-shadow:
+          0 12px 24px rgba(58, 36, 24, 0.17),
+          0 0 0 1px rgba(255, 255, 255, 0.30) inset;
+      }
+
+      .quickIcon:active {
+        transform: scale(0.94);
+      }
+
+      .quickVideo {
+        background: linear-gradient(135deg, #ff3b5f, #ff4fa3);
+      }
+
+      .quickInstagram {
+        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
+      }
+
+      .quickX {
+        background: linear-gradient(135deg, #3a2418, #7a4a2a);
+      }
+
+      .quickTelegram {
+        background: linear-gradient(135deg, #72c7ff, #8ff0c6);
+        color: var(--choco);
+      }
+
+      .quickSnapchat {
+        background: linear-gradient(135deg, #fffc00, #ff9f7a);
+        color: var(--choco);
       }
 
       .ageNote {
@@ -823,6 +888,7 @@
       }
 
       .btn:focus-visible,
+      .quickIcon:focus-visible,
       .themeToggle:focus-visible,
       .pageDot:focus-visible,
       .legalButton:focus-visible,
@@ -1263,6 +1329,35 @@
         color: rgba(255, 255, 255, 0.46);
       }
 
+      html[data-theme="dark"] .quickIcon {
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        box-shadow:
+          0 8px 22px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      }
+
+      html[data-theme="dark"] .quickVideo {
+        background: linear-gradient(135deg, #ff8c00, #ff4f00);
+      }
+
+      html[data-theme="dark"] .quickInstagram {
+        background: linear-gradient(135deg, #e1306c, #8f1d7a);
+      }
+
+      html[data-theme="dark"] .quickX {
+        background: linear-gradient(135deg, #2a2a2a, #111111);
+      }
+
+      html[data-theme="dark"] .quickTelegram {
+        background: linear-gradient(135deg, #4f6f8d, #2f3d4b);
+        color: white;
+      }
+
+      html[data-theme="dark"] .quickSnapchat {
+        background: linear-gradient(135deg, #fffc00, #ffb000);
+        color: #1d1600;
+      }
+
       html[data-theme="dark"] .footer,
       html[data-theme="dark"] .legalFooter {
         color: rgba(255, 255, 255, 0.48);
@@ -1376,6 +1471,7 @@
       }
 
       html[data-theme="dark"] .btn:focus-visible,
+      html[data-theme="dark"] .quickIcon:focus-visible,
       html[data-theme="dark"] .themeToggle:focus-visible,
       html[data-theme="dark"] .pageDot:focus-visible,
       html[data-theme="dark"] .legalButton:focus-visible,
@@ -1426,6 +1522,17 @@
           font-size: 15px;
         }
 
+        .quickLinks {
+          gap: 8px;
+          margin-bottom: 15px;
+        }
+
+        .quickIcon {
+          width: 39px;
+          height: 39px;
+          font-size: 17px;
+        }
+
         .btn {
           min-height: 60px;
           font-size: 16px;
@@ -1474,6 +1581,64 @@
 
             <p class="bio">🍒 Your daily little crush.</p>
             <p class="trust">sunny mood • soft tease • sweet energy</p>
+
+            <nav class="quickLinks" aria-label="Quick social links">
+              <a
+                href="https://xhamster.com/videos/blond-twink-filled-in-a-forest-lookout-xhKO3DS"
+                class="quickIcon quickVideo"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open featured video"
+                data-link-key="featuredVideo"
+              >
+                ▶
+              </a>
+
+              <a
+                href="https://www.instagram.com/kyu_crush/"
+                class="quickIcon quickInstagram"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Instagram"
+                data-link-key="instagram"
+              >
+                ◎
+              </a>
+
+              <a
+                href="https://x.com/kyu_crush"
+                class="quickIcon quickX"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open X"
+                data-link-key="x"
+              >
+                𝕏
+              </a>
+
+              <a
+                href="https://t.me/kyu_crush"
+                class="quickIcon quickTelegram"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Telegram"
+                data-link-key="telegram"
+              >
+                ✈
+              </a>
+
+              <a
+                href="https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
+                class="quickIcon quickSnapchat"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Snapchat"
+                data-link-key="snapchat"
+              >
+                👻
+              </a>
+            </nav>
+
             <p class="ageNote">
               Some links may contain adult content. 18+ only.
             </p>
@@ -1760,4 +1925,4 @@
       </div>
     </section>
   </body>
-  </html>
+</html>
