@@ -29,7 +29,6 @@
 
     <script>
       const GA_MEASUREMENT_ID = "G-Z02Y2MPX8D";
-      const CONSENT_STORAGE_KEY = "kyu_crush_analytics_consent";
 
       const profilePictures = {
         light: "1x1_lightpic.jpg",
@@ -125,71 +124,6 @@
         gtag("config", GA_MEASUREMENT_ID, {
           anonymize_ip: true
         });
-      }
-
-      function getAnalyticsConsent() {
-        return localStorage.getItem(CONSENT_STORAGE_KEY);
-      }
-
-      function setAnalyticsConsent(value) {
-        localStorage.setItem(CONSENT_STORAGE_KEY, value);
-      }
-
-      function acceptAnalytics() {
-        setAnalyticsConsent("accepted");
-        hideCookieBanner();
-        loadGoogleAnalytics();
-
-        const currentTheme = document.documentElement.dataset.theme || "light";
-        initializeThemeTracking(currentTheme);
-        setupButtonImpressionTracking();
-        updateSwipeState();
-
-        trackEvent("analytics_consent_update", {
-          consent_status: "accepted"
-        });
-      }
-
-      function rejectAnalytics() {
-        setAnalyticsConsent("rejected");
-        hideCookieBanner();
-        analyticsEnabled = false;
-      }
-
-      function resetAnalyticsConsent() {
-        localStorage.removeItem(CONSENT_STORAGE_KEY);
-        analyticsEnabled = false;
-        analyticsInitialized = false;
-        showCookieBannerIfNeeded();
-        closeLegalPanel();
-      }
-
-      function showCookieBannerIfNeeded() {
-        const consent = getAnalyticsConsent();
-        const banner = document.getElementById("cookieBanner");
-
-        if (!banner) return;
-
-        if (consent === "accepted") {
-          banner.hidden = true;
-          loadGoogleAnalytics();
-          return;
-        }
-
-        if (consent === "rejected") {
-          banner.hidden = true;
-          return;
-        }
-
-        banner.hidden = false;
-      }
-
-      function hideCookieBanner() {
-        const banner = document.getElementById("cookieBanner");
-
-        if (!banner) return;
-
-        banner.hidden = true;
       }
 
       function trackEvent(eventName, eventParams = {}) {
@@ -489,20 +423,15 @@
       window.addEventListener("DOMContentLoaded", function () {
         const initialTheme = document.documentElement.dataset.theme || "light";
 
+        loadGoogleAnalytics();
+
         setTheme(initialTheme, {
           trackChange: false
         });
 
         applyTrackedLinks();
-        showCookieBannerIfNeeded();
-
-        const consent = getAnalyticsConsent();
-
-        if (consent === "accepted") {
-          initializeThemeTracking(initialTheme);
-          setupButtonImpressionTracking();
-        }
-
+        initializeThemeTracking(initialTheme);
+        setupButtonImpressionTracking();
         updateSwipeState();
 
         const shell = document.getElementById("swipeShell");
@@ -800,9 +729,7 @@
       .themeToggle:focus-visible,
       .pageDot:focus-visible,
       .legalButton:focus-visible,
-      .cookieButton:focus-visible,
-      .legalClose:focus-visible,
-      .inlineLegalAction:focus-visible {
+      .legalClose:focus-visible {
         outline: 3px solid rgba(58, 36, 24, 0.90);
         outline-offset: 3px;
       }
@@ -1028,65 +955,6 @@
         opacity: 0.48;
       }
 
-      .cookieBanner {
-        position: fixed;
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        z-index: 20;
-        max-width: 430px;
-        margin: 0 auto;
-        padding: 16px;
-        border-radius: 24px;
-        background: rgba(255, 250, 240, 0.94);
-        border: 2px solid rgba(255, 255, 255, 0.74);
-        color: var(--choco);
-        box-shadow:
-          0 20px 44px rgba(58, 36, 24, 0.20),
-          0 0 0 1px rgba(255, 255, 255, 0.42) inset;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-      }
-
-      .cookieTitle {
-        margin: 0 0 6px;
-        font-size: 15px;
-        font-weight: 900;
-      }
-
-      .cookieText {
-        margin: 0 0 12px;
-        font-size: 12px;
-        line-height: 1.45;
-        font-weight: 800;
-        color: rgba(58, 36, 24, 0.64);
-      }
-
-      .cookieActions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .cookieButton {
-        border: 0;
-        border-radius: 999px;
-        padding: 11px 12px;
-        font-size: 12px;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .cookieAccept {
-        background: linear-gradient(135deg, #ff4fa3, #ff3b5f);
-        color: white;
-      }
-
-      .cookieReject {
-        background: rgba(58, 36, 24, 0.10);
-        color: rgba(58, 36, 24, 0.80);
-      }
-
       .legalOverlay {
         position: fixed;
         inset: 0;
@@ -1178,26 +1046,6 @@
         color: rgba(58, 36, 24, 0.58);
         font-size: 12px;
         font-weight: 700;
-      }
-
-      .inlineLegalAction {
-        border: 0;
-        border-radius: 999px;
-        padding: 10px 13px;
-        background: rgba(58, 36, 24, 0.10);
-        color: rgba(58, 36, 24, 0.84);
-        font-size: 12px;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .legalNotice {
-        padding: 12px;
-        border-radius: 16px;
-        background: rgba(255, 59, 95, 0.10);
-        border: 1px solid rgba(255, 59, 95, 0.22);
-        color: rgba(58, 36, 24, 0.86);
-        font-weight: 900;
       }
 
       html[data-theme="dark"] body {
@@ -1353,14 +1201,12 @@
         background: #ff8c00;
       }
 
-      html[data-theme="dark"] .cookieBanner,
       html[data-theme="dark"] .legalBox {
         background: rgba(14, 14, 18, 0.96);
         border: 1px solid rgba(255, 255, 255, 0.16);
         color: white;
       }
 
-      html[data-theme="dark"] .cookieText,
       html[data-theme="dark"] .legalContent p,
       html[data-theme="dark"] .legalContent li {
         color: rgba(255, 255, 255, 0.66);
@@ -1374,26 +1220,16 @@
         color: rgba(255, 255, 255, 0.50);
       }
 
-      html[data-theme="dark"] .cookieReject,
-      html[data-theme="dark"] .legalClose,
-      html[data-theme="dark"] .inlineLegalAction {
+      html[data-theme="dark"] .legalClose {
         background: rgba(255, 255, 255, 0.10);
         color: white;
-      }
-
-      html[data-theme="dark"] .legalNotice {
-        background: rgba(255, 59, 95, 0.14);
-        border-color: rgba(255, 59, 95, 0.26);
-        color: rgba(255, 255, 255, 0.86);
       }
 
       html[data-theme="dark"] .btn:focus-visible,
       html[data-theme="dark"] .themeToggle:focus-visible,
       html[data-theme="dark"] .pageDot:focus-visible,
       html[data-theme="dark"] .legalButton:focus-visible,
-      html[data-theme="dark"] .cookieButton:focus-visible,
-      html[data-theme="dark"] .legalClose:focus-visible,
-      html[data-theme="dark"] .inlineLegalAction:focus-visible {
+      html[data-theme="dark"] .legalClose:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.95);
         outline-offset: 3px;
       }
@@ -1451,10 +1287,6 @@
         }
 
         .secretMini {
-          grid-template-columns: 1fr;
-        }
-
-        .cookieActions {
           grid-template-columns: 1fr;
         }
       }
@@ -1625,27 +1457,6 @@
     </main>
 
     <section
-      id="cookieBanner"
-      class="cookieBanner"
-      aria-label="Analytics consent"
-      hidden
-    >
-      <p class="cookieTitle">Tiny analytics? 🍒</p>
-      <p class="cookieText">
-        This hub can use Google Analytics to see which links, themes and secret areas work.
-        Analytics only starts after you accept.
-      </p>
-      <div class="cookieActions">
-        <button class="cookieButton cookieAccept" type="button" onclick="acceptAnalytics()">
-          Accept analytics
-        </button>
-        <button class="cookieButton cookieReject" type="button" onclick="rejectAnalytics()">
-          Reject
-        </button>
-      </div>
-    </section>
-
-    <section
       id="legalOverlay"
       class="legalOverlay"
       aria-label="Legal information"
@@ -1705,11 +1516,14 @@
         </article>
 
         <article class="legalPanel legalContent" data-legal-panel="privacy" hidden>
-          <h3>Privacy Policy / Datenschutzhinweis</h3>
+          <h3>Datenschutzhinweis / Privacy Policy</h3>
 
-          <p class="legalNotice">
-            Dieser Datenschutztext ist vorläufig. Das DSGVO-Snippet von Impressum-Privatschutz
-            sollte noch ergänzt werden.
+          <p>
+            Diese Datenschutzerklärung informiert darüber, welche personenbezogenen Daten beim Besuch dieser Website verarbeitet werden.
+          </p>
+
+          <p lang="en">
+            This privacy policy explains which personal data may be processed when visiting this website.
           </p>
 
           <h3>Verantwortlicher / Controller</h3>
@@ -1725,67 +1539,83 @@
 
           <h3>Hosting</h3>
           <p>
-            This website is hosted via GitHub Pages. When this website is accessed,
-            technical data such as IP address, browser information, time of access and requested files
-            may be processed by the hosting provider to deliver the website and maintain security.
+            Diese Website wird über GitHub Pages bereitgestellt. Beim Aufruf der Website können technische Zugriffsdaten verarbeitet werden, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Dateien, Browserinformationen und Betriebssysteminformationen. Die Verarbeitung erfolgt zur Bereitstellung der Website, zur technischen Stabilität und zur Sicherheit.
           </p>
 
-          <h3>Analytics</h3>
-          <p>
-            This website uses Google Analytics only after consent. Analytics may process technical
-            and usage related information, for example page views, outbound link clicks, theme usage,
-            button impressions, swipe interaction and secret area views.
+          <p lang="en">
+            This website is hosted via GitHub Pages. When visiting the website, technical access data may be processed, including IP address, date and time of access, requested files, browser information and operating system information. This processing is used to provide the website, maintain technical stability and ensure security.
           </p>
 
           <p>
-            Analytics events currently used:
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt im sicheren und zuverlässigen Betrieb dieser Website.
           </p>
 
-          <ul>
-            <li>theme_view</li>
-            <li>theme_change</li>
-            <li>theme_time</li>
-            <li>button_impression</li>
-            <li>outbound_click</li>
-            <li>swipe_attempt</li>
-            <li>secret_area_view</li>
-            <li>secret_snapchat_click</li>
-          </ul>
-
-          <h3>Consent / Einwilligung</h3>
+          <h3>Lokaler Speicher / Local storage</h3>
           <p>
-            Analytics is disabled by default. You can accept or reject analytics in the consent banner.
-            Your choice is stored in local storage on your device.
+            Diese Website speichert die gewählte Darstellung, also Light Mode oder Dark Mode, lokal im Browser. Diese Speicherung dient dazu, die Auswahl des Nutzers zu merken.
+          </p>
+
+          <p lang="en">
+            This website stores the selected display mode, such as light mode or dark mode, locally in the browser. This is used to remember the user's preferences.
+          </p>
+
+          <h3>Google Analytics</h3>
+          <p>
+            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, ausgehende Link-Klicks, Button-Impressionen, Theme-Nutzung, Swipe-Interaktionen und Aufrufe des versteckten Bereichs.
+          </p>
+
+          <p lang="en">
+            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, outbound link clicks, button impressions, theme usage, swipe interactions and views of the hidden area.
           </p>
 
           <p>
-            <button class="inlineLegalAction" type="button" onclick="resetAnalyticsConsent()">
-              Change analytics choice
-            </button>
+            Anbieter ist Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Es kann nicht ausgeschlossen werden, dass Daten auch an Google LLC in den USA übermittelt werden.
           </p>
 
-          <h3>Local storage / Lokaler Speicher</h3>
+          <h3>Ausgehende Links / Outgoing links</h3>
           <p>
-            This website stores your theme choice and analytics consent choice locally in your browser.
-            This is used to remember your preferences.
+            Diese Website enthält Links zu externen Plattformen, darunter Instagram, X, Telegram, Snapchat und xHamster. Beim Öffnen dieser Links gelten die Datenschutzbestimmungen der jeweiligen externen Anbieter.
           </p>
 
-          <h3>Outgoing links / Ausgehende Links</h3>
-          <p>
-            This website links to external platforms such as Instagram, X, Telegram, Snapchat and xHamster.
-            Their own privacy policies apply once you leave this website.
+          <p lang="en">
+            This website contains links to external platforms, including Instagram, X, Telegram, Snapchat and xHamster. When opening these links, the privacy policies of the respective external providers apply.
           </p>
 
-          <h3>Your rights / Deine Rechte</h3>
+          <h3>Inhalte ab 18 / Adult content</h3>
           <p>
-            Depending on applicable law, you may have rights to access, rectification, deletion,
-            restriction, objection and data portability. You may also have the right to lodge a complaint
-            with a competent data protection authority.
+            Einige ausgehende Links können Inhalte für Erwachsene enthalten. Diese Website richtet sich nur an Personen ab 18 Jahren.
           </p>
 
-          <h3>Adult content / Inhalte ab 18</h3>
+          <p lang="en">
+            Some outgoing links may contain adult content. This website is intended for adults aged 18 and over only.
+          </p>
+
+          <h3>Speicherdauer / Storage period</h3>
           <p>
-            Some outgoing links may contain adult content. This website is intended for adults only.
+            Lokal gespeicherte Einstellungen bleiben im Browser gespeichert, bis sie gelöscht oder geändert werden. Serverseitige Zugriffsdaten werden durch den Hosting-Anbieter nach dessen eigenen Regeln verarbeitet. Analytics-Daten werden entsprechend den Einstellungen bei Google Analytics verarbeitet.
+          </p>
+
+          <h3>Deine Rechte / Your rights</h3>
+          <p>
+            Betroffene Personen haben nach Maßgabe der DSGVO insbesondere Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.
+          </p>
+
+          <p lang="en">
+            Depending on applicable law, data subjects may have rights to access, rectification, deletion, restriction of processing, data portability and objection.
+          </p>
+
+          <h3>Beschwerderecht / Right to lodge a complaint</h3>
+          <p>
+            Du hast das Recht, dich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren.
+          </p>
+
+          <p lang="en">
+            You have the right to lodge a complaint with a competent data protection supervisory authority.
+          </p>
+
+          <p>
+            <strong>Die deutsche Fassung ist maßgeblich.</strong><br />
+            <span lang="en">The German version is authoritative.</span>
           </p>
         </article>
       </div>
