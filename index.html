@@ -1159,8 +1159,25 @@
         font-weight: 700;
       }
 
+      .legalContent a {
+        color: inherit;
+        font-weight: 900;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .legalContent strong {
+        color: rgba(58, 36, 24, 0.90);
+      }
+
       .legalContent ul {
         padding-left: 18px;
+      }
+
+      .mutedLegal {
+        color: rgba(58, 36, 24, 0.58);
+        font-size: 12px;
+        font-weight: 700;
       }
 
       .inlineLegalAction {
@@ -1347,6 +1364,14 @@
       html[data-theme="dark"] .legalContent p,
       html[data-theme="dark"] .legalContent li {
         color: rgba(255, 255, 255, 0.66);
+      }
+
+      html[data-theme="dark"] .legalContent strong {
+        color: rgba(255, 255, 255, 0.90);
+      }
+
+      html[data-theme="dark"] .mutedLegal {
+        color: rgba(255, 255, 255, 0.50);
       }
 
       html[data-theme="dark"] .cookieReject,
@@ -1588,11 +1613,11 @@
 
       <footer class="legalFooter" aria-label="Legal footer">
         <button class="legalButton" type="button" onclick="openLegalPanel('imprint')">
-          Imprint
+          Impressum / Imprint
         </button>
         <span class="legalDivider">•</span>
         <button class="legalButton" type="button" onclick="openLegalPanel('privacy')">
-          Privacy
+          Privacy / Datenschutz
         </button>
         <span class="legalDivider">•</span>
         <span>18+</span>
@@ -1629,17 +1654,18 @@
     >
       <div class="legalBox" role="dialog" aria-modal="true">
         <div class="legalHeader">
-          <h2>Legal</h2>
+          <h2>Legal / Rechtliches</h2>
           <button class="legalClose" type="button" onclick="closeLegalPanel()" aria-label="Close">
             ×
           </button>
         </div>
 
         <article class="legalPanel legalContent" data-legal-panel="imprint" hidden>
-          <h3>Impressum</h3>
+          <h3>Impressum / Imprint</h3>
 
           <p>
-            Inhalte gemäß § 5 DDG
+            <strong>Angaben gemäß § 5 DDG</strong><br />
+            <span class="mutedLegal">Information according to Section 5 DDG</span>
           </p>
 
           <p>
@@ -1650,26 +1676,31 @@
             Deutschland
           </p>
 
-          <h3>Kontaktdaten</h3>
+          <h3>Kontakt / Contact</h3>
           <p>
-            E-Mail: kyu.crush.hub@gmail.com<br />
-            Telefon: 1785807915
+            E-Mail:
+            <a href="mailto:kyu.crush.hub@gmail.com">kyu.crush.hub@gmail.com</a>
           </p>
 
-          <h3>Redaktionell verantwortlich</h3>
-          <p>
-            Ekkarat Huayyai
-          </p>
-
-          <h3>Quelle</h3>
+          <h3>Quelle / Source</h3>
           <p>
             Impressum-Privatschutz
           </p>
 
-          <h3>Hinweis</h3>
+          <h3>Hinweis / Notice</h3>
           <p>
-            Diese Website ist ein Creator-Linkhub. Einige ausgehende Links können Inhalte für Erwachsene enthalten.
-            Nutzung nur ab 18 Jahren.
+            Diese Website ist ein Creator-Linkhub. Einige ausgehende Links können Inhalte
+            für Erwachsene enthalten. Die Nutzung ist nur für Personen ab 18 Jahren bestimmt.
+          </p>
+
+          <p lang="en">
+            This website is a creator link hub. Some outgoing links may contain adult content.
+            Use is intended for adults aged 18 and over only.
+          </p>
+
+          <p>
+            <strong>Die deutsche Fassung ist maßgeblich.</strong><br />
+            <span lang="en">The German version is authoritative.</span>
           </p>
         </article>
 
@@ -1677,17 +1708,19 @@
           <h3>Privacy Policy / Datenschutzhinweis</h3>
 
           <p class="legalNotice">
-            Dieser Datenschutztext ist vorläufig. Das DSGVO-Snippet von Impressum-Privatschutz sollte noch ergänzt werden.
+            Dieser Datenschutztext ist vorläufig. Das DSGVO-Snippet von Impressum-Privatschutz
+            sollte noch ergänzt werden.
           </p>
 
-          <h3>Controller / Verantwortlicher</h3>
+          <h3>Verantwortlicher / Controller</h3>
           <p>
             Ekkarat Huayyai<br />
             c/o IP-Management #10769<br />
             Ludwig-Erhard-Straße 18<br />
             20459 Hamburg<br />
             Deutschland<br />
-            E-Mail: kyu.crush.hub@gmail.com
+            E-Mail:
+            <a href="mailto:kyu.crush.hub@gmail.com">kyu.crush.hub@gmail.com</a>
           </p>
 
           <h3>Hosting</h3>
@@ -1719,7 +1752,7 @@
             <li>secret_snapchat_click</li>
           </ul>
 
-          <h3>Consent</h3>
+          <h3>Consent / Einwilligung</h3>
           <p>
             Analytics is disabled by default. You can accept or reject analytics in the consent banner.
             Your choice is stored in local storage on your device.
@@ -1731,26 +1764,26 @@
             </button>
           </p>
 
-          <h3>Local storage</h3>
+          <h3>Local storage / Lokaler Speicher</h3>
           <p>
             This website stores your theme choice and analytics consent choice locally in your browser.
             This is used to remember your preferences.
           </p>
 
-          <h3>Outgoing links</h3>
+          <h3>Outgoing links / Ausgehende Links</h3>
           <p>
             This website links to external platforms such as Instagram, X, Telegram, Snapchat and xHamster.
             Their own privacy policies apply once you leave this website.
           </p>
 
-          <h3>Your rights</h3>
+          <h3>Your rights / Deine Rechte</h3>
           <p>
             Depending on applicable law, you may have rights to access, rectification, deletion,
             restriction, objection and data portability. You may also have the right to lodge a complaint
             with a competent data protection authority.
           </p>
 
-          <h3>Adult content</h3>
+          <h3>Adult content / Inhalte ab 18</h3>
           <p>
             Some outgoing links may contain adult content. This website is intended for adults only.
           </p>
@@ -1758,4 +1791,4 @@
       </div>
     </section>
   </body>
-  </html>
+</html>
