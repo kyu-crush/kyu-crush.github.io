@@ -50,38 +50,56 @@
           name: "featured_video",
           medium: "featured_button",
           campaign: "featured_video",
-          content: "watch_kyu_crush"
+          content: "watch_kyu_crush",
+          area: "main_area",
+          type: "primary"
         },
         instagram: {
           name: "instagram",
           medium: "social_button",
           campaign: "instagram_daily_glow",
-          content: "main_links"
+          content: "main_links",
+          area: "main_area",
+          type: "social",
+          platform: "instagram"
         },
         x: {
           name: "x",
           medium: "social_button",
           campaign: "x_teasers_updates",
-          content: "main_links"
+          content: "main_links",
+          area: "main_area",
+          type: "social",
+          platform: "x"
         },
         telegram: {
           name: "telegram",
           medium: "social_button",
           campaign: "telegram_private_updates",
-          content: "main_links"
+          content: "main_links",
+          area: "main_area",
+          type: "social",
+          platform: "telegram"
         },
         snapchat: {
           name: "snapchat",
           medium: "secret_swipe_button",
           campaign: "snapchat_secret_area",
-          content: "hidden_panel"
+          content: "hidden_panel",
+          area: "secret_area",
+          type: "social",
+          platform: "snapchat"
         }
       };
+
+      const pageLoadedAt = Date.now();
 
       let analyticsEnabled = false;
       let analyticsInitialized = false;
       let secretAreaTracked = false;
       let swipeAttemptTracked = false;
+      let firstClickTracked = false;
+      let lastTrackedPanelIndex = null;
       let currentTrackedTheme = null;
       let themeStartedAt = Date.now();
       let themeLastSentAt = Date.now();
@@ -90,6 +108,26 @@
 
       function gtag() {
         dataLayer.push(arguments);
+      }
+
+      function getCurrentTheme() {
+        return document.documentElement.dataset.theme || "light";
+      }
+
+      function getPanelName(index) {
+        return index === 1 ? "secret_area" : "main_area";
+      }
+
+      function getCurrentPanelIndex() {
+        const shell = document.getElementById("swipeShell");
+
+        if (!shell) return 0;
+
+        return shell.scrollLeft > shell.clientWidth * 0.42 ? 1 : 0;
+      }
+
+      function getCurrentPanelName() {
+        return getPanelName(getCurrentPanelIndex());
       }
 
       function buildTrackedUrl(key) {
@@ -131,25 +169,84 @@
 
         gtag("event", eventName, {
           brand: "kyu_crush",
+          theme: getCurrentTheme(),
           transport_type: "beacon",
           ...eventParams
         });
       }
 
-      function trackLinkClick(linkName, linkUrl, linkMedium, linkCampaign) {
+      function trackTimeToFirstClick() {
+        if (firstClickTracked) return;
+
+        firstClickTracked = true;
+
+        trackEvent("time_to_first_click", {
+          seconds: Math.round((Date.now() - pageLoadedAt) / 1000),
+          panel_name: getCurrentPanelName(),
+          panel_index: getCurrentPanelIndex()
+        });
+      }
+
+      function trackPanelView(panelIndex, source = "scroll") {
+        if (lastTrackedPanelIndex === panelIndex) return;
+
+        lastTrackedPanelIndex = panelIndex;
+
+        trackEvent("panel_view", {
+          panel_name: getPanelName(panelIndex),
+          panel_index: panelIndex,
+          source: source
+        });
+      }
+
+      function trackLinkClick(key, linkUrl) {
+        const tracking = linkTracking[key];
+
+        if (!tracking) return;
+
+        trackTimeToFirstClick();
+
         trackEvent("outbound_click", {
-          link_name: linkName,
+          link_name: tracking.name,
           link_url: linkUrl,
-          link_medium: linkMedium,
-          link_campaign: linkCampaign
+          link_medium: tracking.medium,
+          link_campaign: tracking.campaign,
+          link_content: tracking.content,
+          link_type: tracking.type,
+          area_name: tracking.area,
+          panel_name: getCurrentPanelName(),
+          panel_index: getCurrentPanelIndex()
         });
 
-        if (linkName === "snapchat") {
-          trackEvent("secret_snapchat_click", {
-            link_name: linkName,
+        if (tracking.type === "primary") {
+          trackEvent("primary_cta_click", {
+            link_name: tracking.name,
             link_url: linkUrl,
-            link_medium: linkMedium,
-            link_campaign: linkCampaign,
+            area_name: tracking.area
+          });
+        }
+
+        if (tracking.type === "social") {
+          trackEvent("social_click", {
+            platform: tracking.platform,
+            link_name: tracking.name,
+            link_url: linkUrl,
+            area_name: tracking.area
+          });
+        }
+
+        if (tracking.name === "snapchat") {
+          trackEvent("secret_cta_click", {
+            link_name: tracking.name,
+            link_url: linkUrl,
+            area_name: "secret_area"
+          });
+
+          trackEvent("secret_snapchat_click", {
+            link_name: tracking.name,
+            link_url: linkUrl,
+            link_medium: tracking.medium,
+            link_campaign: tracking.campaign,
             area_name: "secret_crush_area"
           });
         }
@@ -179,7 +276,7 @@
 
       function trackThemeView(theme) {
         trackEvent("theme_view", {
-          theme: theme
+          viewed_theme: theme
         });
       }
 
@@ -199,7 +296,7 @@
         if (durationSeconds < 2) return;
 
         trackEvent("theme_time", {
-          theme: currentTrackedTheme,
+          viewed_theme: currentTrackedTheme,
           duration_seconds: durationSeconds,
           reason: reason
         });
@@ -236,12 +333,7 @@
           link.href = trackedUrl;
 
           link.addEventListener("click", function () {
-            trackLinkClick(
-              tracking.name,
-              trackedUrl,
-              tracking.medium,
-              tracking.campaign
-            );
+            trackLinkClick(key, trackedUrl);
           });
         });
       }
@@ -270,7 +362,11 @@
                 link_name: tracking.name,
                 link_medium: tracking.medium,
                 link_campaign: tracking.campaign,
-                link_content: tracking.content
+                link_content: tracking.content,
+                link_type: tracking.type,
+                area_name: tracking.area,
+                panel_name: getCurrentPanelName(),
+                panel_index: getCurrentPanelIndex()
               });
 
               observer.unobserve(button);
@@ -307,7 +403,7 @@
       }
 
       function setTheme(theme, options = {}) {
-        const previousTheme = document.documentElement.dataset.theme || "light";
+        const previousTheme = getCurrentTheme();
         const shouldTrackChange = options.trackChange === true;
 
         if (shouldTrackChange && previousTheme !== theme) {
@@ -336,7 +432,7 @@
       }
 
       function toggleTheme() {
-        const currentTheme = document.documentElement.dataset.theme || "light";
+        const currentTheme = getCurrentTheme();
         const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
         setTheme(nextTheme, {
@@ -367,9 +463,10 @@
 
         if (!shell || !dots.length) return;
 
-        const activeIndex = shell.scrollLeft > shell.clientWidth * 0.42 ? 1 : 0;
+        const activeIndex = getCurrentPanelIndex();
 
         trackSwipeAttempt(shell.scrollLeft);
+        trackPanelView(activeIndex, "swipe_state");
 
         if (activeIndex === 1) {
           trackSecretAreaView();
@@ -421,7 +518,7 @@
       })();
 
       window.addEventListener("DOMContentLoaded", function () {
-        const initialTheme = document.documentElement.dataset.theme || "light";
+        const initialTheme = getCurrentTheme();
 
         loadGoogleAnalytics();
 
@@ -989,17 +1086,8 @@
       .legalHeader {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
+        justify-content: flex-end;
         margin-bottom: 14px;
-      }
-
-      .legalHeader h2 {
-        margin: 0;
-        font-size: 24px;
-        line-height: 1;
-        font-weight: 900;
-        letter-spacing: -0.04em;
       }
 
       .legalClose {
@@ -1465,7 +1553,6 @@
     >
       <div class="legalBox" role="dialog" aria-modal="true">
         <div class="legalHeader">
-          <h2>Legal / Rechtliches</h2>
           <button class="legalClose" type="button" onclick="closeLegalPanel()" aria-label="Close">
             ×
           </button>
@@ -1561,11 +1648,11 @@
 
           <h3>Google Analytics</h3>
           <p>
-            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, ausgehende Link-Klicks, Button-Impressionen, Theme-Nutzung, Swipe-Interaktionen und Aufrufe des versteckten Bereichs.
+            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, Panel-Aufrufe, ausgehende Link-Klicks, Hauptbutton-Klicks, Social-Klicks, Button-Impressionen, Theme-Nutzung, Swipe-Interaktionen, Zeit bis zum ersten Klick und Aufrufe des versteckten Bereichs.
           </p>
 
           <p lang="en">
-            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, outbound link clicks, button impressions, theme usage, swipe interactions and views of the hidden area.
+            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, panel views, outbound link clicks, primary button clicks, social clicks, button impressions, theme usage, swipe interactions, time to first click and views of the hidden area.
           </p>
 
           <p>
