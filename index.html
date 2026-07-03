@@ -6,7 +6,7 @@
 
     <meta
       name="description"
-      content="Kyu Crush — daily glow, teasers, quick snaps, private updates, and sweet links."
+      content="Kyu Crush — quick snaps, daily glow, teasers, private updates, and sweet links."
     />
     <meta id="themeColorMeta" name="theme-color" content="#fff3d6" />
 
@@ -36,14 +36,23 @@
       };
 
       const baseLinks = {
-        instagram: "https://www.instagram.com/kyu_crush/",
-        x: "https://x.com/kyu_crush",
         snapchat:
           "https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB",
+        instagram: "https://www.instagram.com/kyu_crush/",
+        x: "https://x.com/kyu_crush",
         telegram: "https://t.me/kyu_crush"
       };
 
       const linkTracking = {
+        snapchat: {
+          name: "snapchat",
+          medium: "social_button",
+          campaign: "snapchat_quick_snaps",
+          content: "main_links_top",
+          area: "main_area",
+          type: "social",
+          platform: "snapchat"
+        },
         instagram: {
           name: "instagram",
           medium: "social_button",
@@ -61,15 +70,6 @@
           area: "main_area",
           type: "social",
           platform: "x"
-        },
-        snapchat: {
-          name: "snapchat",
-          medium: "social_button",
-          campaign: "snapchat_quick_snaps",
-          content: "main_links",
-          area: "main_area",
-          type: "social",
-          platform: "snapchat"
         },
         telegram: {
           name: "telegram",
@@ -710,29 +710,29 @@
         text-transform: uppercase;
       }
 
-      .instagram {
-        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.16) inset,
-          0 0 30px rgba(255, 79, 163, 0.28),
-          0 12px 24px rgba(58, 36, 24, 0.18);
-      }
-
-      .instagram:hover {
-        transform: translateY(-2px) scale(1.03);
-      }
-
-      .twitter {
-        background: linear-gradient(135deg, #3a2418, #7a4a2a);
-      }
-
       .snapchat {
         background: linear-gradient(135deg, #fffc00, #ff9f7a);
         color: var(--choco);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+          0 0 28px rgba(255, 199, 0, 0.34),
+          0 12px 24px rgba(58, 36, 24, 0.18);
+      }
+
+      .snapchat:hover {
+        transform: translateY(-2px) scale(1.03);
+      }
+
+      .instagram {
+        background: linear-gradient(135deg, #ff7a9f, #ff4fa3);
+      }
+
+      .twitter {
+        background: linear-gradient(135deg, #2a1b16, #121212);
       }
 
       .telegram {
-        background: linear-gradient(135deg, #72c7ff, #8ff0c6);
+        background: linear-gradient(135deg, #45bfff, #62e6c0);
         color: var(--choco);
       }
 
@@ -932,35 +932,39 @@
           0 8px 22px rgba(0, 0, 0, 0.35);
       }
 
+      html[data-theme="dark"] .snapchat {
+        background: linear-gradient(135deg, #fffc00, #ffb000);
+        color: #1d1600;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+          0 0 32px rgba(255, 176, 0, 0.42),
+          0 10px 24px rgba(0, 0, 0, 0.34);
+      }
+
       html[data-theme="dark"] .instagram {
         background: linear-gradient(135deg, #e1306c, #8f1d7a);
         border: 1px solid rgba(255, 255, 255, 0.20);
       }
 
       html[data-theme="dark"] .twitter {
-        background: linear-gradient(135deg, #2a2a2a, #111111);
+        background: linear-gradient(135deg, #202020, #050505);
         border: 1px solid rgba(255, 255, 255, 0.24);
       }
 
       html[data-theme="dark"] .twitter:hover {
-        background: linear-gradient(135deg, #343434, #1d1d1d);
+        background: linear-gradient(135deg, #2b2b2b, #101010);
         border-color: rgba(255, 255, 255, 0.34);
       }
 
-      html[data-theme="dark"] .snapchat {
-        background: linear-gradient(135deg, #fffc00, #ffb000);
-        color: #1d1600;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-      }
-
       html[data-theme="dark"] .telegram {
-        background: linear-gradient(135deg, #4f6f8d, #2f3d4b);
+        background: linear-gradient(135deg, #45aee6, #278a9c);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.22);
       }
 
       html[data-theme="dark"] .telegram:hover {
-        background: linear-gradient(135deg, #5b7d9d, #384858);
+        background: linear-gradient(135deg, #58bff2, #2e9bad);
         border-color: rgba(255, 255, 255, 0.30);
       }
 
@@ -1068,6 +1072,20 @@
 
         <div class="links">
           <a
+            href="https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
+            class="btn snapchat"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Snapchat"
+            data-link-key="snapchat"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Snapchat 👻</span>
+              <span class="btnSub">quick snaps</span>
+            </span>
+          </a>
+
+          <a
             href="https://www.instagram.com/kyu_crush/"
             class="btn instagram"
             target="_blank"
@@ -1092,20 +1110,6 @@
             <span class="btnText">
               <span class="btnTitle">X / Twitter 💬</span>
               <span class="btnSub">teasers & updates</span>
-            </span>
-          </a>
-
-          <a
-            href="https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
-            class="btn snapchat"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open Snapchat"
-            data-link-key="snapchat"
-          >
-            <span class="btnText">
-              <span class="btnTitle">Snapchat 👻</span>
-              <span class="btnSub">quick snaps</span>
             </span>
           </a>
 
@@ -1257,11 +1261,11 @@
 
           <h3>Ausgehende Links / Outgoing links</h3>
           <p>
-            Diese Website enthält Links zu externen Plattformen, darunter Instagram, X, Snapchat und Telegram. Beim Öffnen dieser Links gelten die Datenschutzbestimmungen der jeweiligen externen Anbieter.
+            Diese Website enthält Links zu externen Plattformen, darunter Snapchat, Instagram, X und Telegram. Beim Öffnen dieser Links gelten die Datenschutzbestimmungen der jeweiligen externen Anbieter.
           </p>
 
           <p lang="en">
-            This website contains links to external platforms, including Instagram, X, Snapchat and Telegram. When opening these links, the privacy policies of the respective external providers apply.
+            This website contains links to external platforms, including Snapchat, Instagram, X and Telegram. When opening these links, the privacy policies of the respective external providers apply.
           </p>
 
           <h3>Inhalte ab 18 / Adult content</h3>
@@ -1301,7 +1305,7 @@
             <span lang="en">The German version is authoritative.</span>
           </p>
         </article>
-      </div> 
+      </div>
     </section>
   </body>
 </html>
