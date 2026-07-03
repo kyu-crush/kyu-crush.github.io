@@ -6,7 +6,7 @@
 
     <meta
       name="description"
-      content="Kyu Crush — main links, daily glow, teasers, socials, secret snaps, and closer updates."
+      content="Kyu Crush — daily glow, teasers, quick snaps, private updates, and sweet links."
     />
     <meta id="themeColorMeta" name="theme-color" content="#fff3d6" />
 
@@ -36,24 +36,14 @@
       };
 
       const baseLinks = {
-        featuredVideo:
-          "https://xhamster.com/videos/blond-twink-filled-in-a-forest-lookout-xhKO3DS",
         instagram: "https://www.instagram.com/kyu_crush/",
         x: "https://x.com/kyu_crush",
-        telegram: "https://t.me/kyu_crush",
         snapchat:
-          "https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
+          "https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB",
+        telegram: "https://t.me/kyu_crush"
       };
 
       const linkTracking = {
-        featuredVideo: {
-          name: "featured_video",
-          medium: "featured_button",
-          campaign: "featured_video",
-          content: "watch_kyu_crush",
-          area: "main_area",
-          type: "primary"
-        },
         instagram: {
           name: "instagram",
           medium: "social_button",
@@ -72,6 +62,15 @@
           type: "social",
           platform: "x"
         },
+        snapchat: {
+          name: "snapchat",
+          medium: "social_button",
+          campaign: "snapchat_quick_snaps",
+          content: "main_links",
+          area: "main_area",
+          type: "social",
+          platform: "snapchat"
+        },
         telegram: {
           name: "telegram",
           medium: "social_button",
@@ -80,15 +79,6 @@
           area: "main_area",
           type: "social",
           platform: "telegram"
-        },
-        snapchat: {
-          name: "snapchat",
-          medium: "secret_swipe_button",
-          campaign: "snapchat_secret_area",
-          content: "hidden_panel",
-          area: "secret_area",
-          type: "social",
-          platform: "snapchat"
         }
       };
 
@@ -96,10 +86,7 @@
 
       let analyticsEnabled = false;
       let analyticsInitialized = false;
-      let secretAreaTracked = false;
-      let swipeAttemptTracked = false;
       let firstClickTracked = false;
-      let lastTrackedPanelIndex = null;
       let currentTrackedTheme = null;
       let themeStartedAt = Date.now();
       let themeLastSentAt = Date.now();
@@ -114,20 +101,12 @@
         return document.documentElement.dataset.theme || "light";
       }
 
-      function getPanelName(index) {
-        return index === 1 ? "secret_area" : "main_area";
-      }
-
       function getCurrentPanelIndex() {
-        const shell = document.getElementById("swipeShell");
-
-        if (!shell) return 0;
-
-        return shell.scrollLeft > shell.clientWidth * 0.42 ? 1 : 0;
+        return 0;
       }
 
       function getCurrentPanelName() {
-        return getPanelName(getCurrentPanelIndex());
+        return "main_area";
       }
 
       function buildTrackedUrl(key) {
@@ -187,18 +166,6 @@
         });
       }
 
-      function trackPanelView(panelIndex, source = "scroll") {
-        if (lastTrackedPanelIndex === panelIndex) return;
-
-        lastTrackedPanelIndex = panelIndex;
-
-        trackEvent("panel_view", {
-          panel_name: getPanelName(panelIndex),
-          panel_index: panelIndex,
-          source: source
-        });
-      }
-
       function trackLinkClick(key, linkUrl) {
         const tracking = linkTracking[key];
 
@@ -218,14 +185,6 @@
           panel_index: getCurrentPanelIndex()
         });
 
-        if (tracking.type === "primary") {
-          trackEvent("primary_cta_click", {
-            link_name: tracking.name,
-            link_url: linkUrl,
-            area_name: tracking.area
-          });
-        }
-
         if (tracking.type === "social") {
           trackEvent("social_click", {
             platform: tracking.platform,
@@ -234,44 +193,6 @@
             area_name: tracking.area
           });
         }
-
-        if (tracking.name === "snapchat") {
-          trackEvent("secret_cta_click", {
-            link_name: tracking.name,
-            link_url: linkUrl,
-            area_name: "secret_area"
-          });
-
-          trackEvent("secret_snapchat_click", {
-            link_name: tracking.name,
-            link_url: linkUrl,
-            link_medium: tracking.medium,
-            link_campaign: tracking.campaign,
-            area_name: "secret_crush_area"
-          });
-        }
-      }
-
-      function trackSecretAreaView() {
-        if (secretAreaTracked) return;
-
-        secretAreaTracked = true;
-
-        trackEvent("secret_area_view", {
-          area_name: "secret_crush_area",
-          discovery_method: "horizontal_swipe"
-        });
-      }
-
-      function trackSwipeAttempt(scrollLeft) {
-        if (swipeAttemptTracked || scrollLeft < 18) return;
-
-        swipeAttemptTracked = true;
-
-        trackEvent("swipe_attempt", {
-          direction: "right",
-          component_name: "secret_swipe_hub"
-        });
       }
 
       function trackThemeView(theme) {
@@ -440,47 +361,6 @@
         });
       }
 
-      function scrollToPanel(index) {
-        const shell = document.getElementById("swipeShell");
-
-        if (!shell) return;
-
-        const panels = shell.querySelectorAll(".panel");
-        const targetPanel = panels[index];
-
-        if (!targetPanel) return;
-
-        targetPanel.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "start"
-        });
-      }
-
-      function updateSwipeState() {
-        const shell = document.getElementById("swipeShell");
-        const dots = document.querySelectorAll(".pageDot");
-
-        if (!shell || !dots.length) return;
-
-        const activeIndex = getCurrentPanelIndex();
-
-        trackSwipeAttempt(shell.scrollLeft);
-        trackPanelView(activeIndex, "swipe_state");
-
-        if (activeIndex === 1) {
-          trackSecretAreaView();
-        }
-
-        dots.forEach(function (dot, index) {
-          dot.classList.toggle("active", index === activeIndex);
-          dot.setAttribute(
-            "aria-current",
-            index === activeIndex ? "true" : "false"
-          );
-        });
-      }
-
       function openLegalPanel(panelName) {
         const legalOverlay = document.getElementById("legalOverlay");
         const panels = document.querySelectorAll(".legalPanel");
@@ -529,15 +409,6 @@
         applyTrackedLinks();
         initializeThemeTracking(initialTheme);
         setupButtonImpressionTracking();
-        updateSwipeState();
-
-        const shell = document.getElementById("swipeShell");
-
-        if (shell) {
-          shell.addEventListener("scroll", function () {
-            window.requestAnimationFrame(updateSwipeState);
-          });
-        }
 
         document.addEventListener("keydown", function (event) {
           if (event.key === "Escape") {
@@ -643,39 +514,6 @@
         max-width: 430px;
         padding: 24px;
         overflow: visible;
-      }
-
-      .swipeShell {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding: 6px 0 18px;
-        margin: -6px 0 0;
-        background: transparent;
-        border: 0;
-        box-shadow: none;
-      }
-
-      .swipeShell::-webkit-scrollbar {
-        display: none;
-      }
-
-      .swipeTrack {
-        display: flex;
-        align-items: stretch;
-        gap: 14px;
-        padding: 0;
-        background: transparent;
-      }
-
-      .panel {
-        flex: 0 0 100%;
-        min-width: 0;
-        scroll-snap-align: start;
       }
 
       .card {
@@ -824,7 +662,6 @@
 
       .btn:focus-visible,
       .themeToggle:focus-visible,
-      .pageDot:focus-visible,
       .legalButton:focus-visible,
       .legalClose:focus-visible {
         outline: 3px solid rgba(58, 36, 24, 0.90);
@@ -873,29 +710,20 @@
         text-transform: uppercase;
       }
 
-      .mainProfile {
-        background: linear-gradient(135deg, #ff4fa3, #ff3b5f);
+      .instagram {
+        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.16) inset,
           0 0 30px rgba(255, 79, 163, 0.28),
           0 12px 24px rgba(58, 36, 24, 0.18);
       }
 
-      .mainProfile:hover {
+      .instagram:hover {
         transform: translateY(-2px) scale(1.03);
-      }
-
-      .instagram {
-        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
       }
 
       .twitter {
         background: linear-gradient(135deg, #3a2418, #7a4a2a);
-      }
-
-      .telegram {
-        background: linear-gradient(135deg, #72c7ff, #8ff0c6);
-        color: var(--choco);
       }
 
       .snapchat {
@@ -903,76 +731,9 @@
         color: var(--choco);
       }
 
-      .secretCard {
-        padding-top: 42px;
-        background:
-          radial-gradient(circle at 18% 10%, rgba(255, 252, 0, 0.28) 0%, transparent 34%),
-          radial-gradient(circle at 88% 22%, rgba(255, 79, 163, 0.22) 0%, transparent 34%),
-          rgba(255, 250, 240, 0.90);
-      }
-
-      .secretBadge {
-        width: fit-content;
-        margin: 0 auto 16px;
-        padding: 8px 13px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.58);
-        border: 2px solid rgba(255, 255, 255, 0.75);
-        color: rgba(58, 36, 24, 0.72);
-        font-size: 12px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        box-shadow: 0 8px 18px rgba(58, 36, 24, 0.10);
-      }
-
-      .secretTitle {
-        margin: 0 0 10px;
+      .telegram {
+        background: linear-gradient(135deg, #72c7ff, #8ff0c6);
         color: var(--choco);
-        font-size: 32px;
-        line-height: 1.02;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-        text-shadow:
-          2px 3px 0 rgba(255, 232, 163, 0.92),
-          -1px -1px 0 rgba(255, 255, 255, 0.85);
-      }
-
-      .secretCopy {
-        max-width: 300px;
-        margin: 0 auto 18px;
-        color: rgba(58, 36, 24, 0.66);
-        font-size: 14px;
-        line-height: 1.45;
-        font-weight: 800;
-      }
-
-      .secretMini {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        max-width: 340px;
-        margin: 0 auto 14px;
-      }
-
-      .miniPill {
-        padding: 12px 10px;
-        border-radius: 17px;
-        background: rgba(255, 255, 255, 0.44);
-        border: 2px solid rgba(255, 255, 255, 0.58);
-        color: rgba(58, 36, 24, 0.70);
-        font-size: 12px;
-        font-weight: 900;
-        box-shadow: 0 8px 16px rgba(58, 36, 24, 0.08);
-      }
-
-      .secretNote {
-        max-width: 310px;
-        margin: 14px auto 0;
-        color: rgba(58, 36, 24, 0.48);
-        font-size: 12px;
-        line-height: 1.4;
-        font-weight: 800;
       }
 
       .footer {
@@ -980,48 +741,6 @@
         font-weight: 800;
         color: rgba(58, 36, 24, 0.46);
         margin-top: 20px;
-      }
-
-      .swipeControls {
-        position: relative;
-        z-index: 4;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        margin: 8px auto 0;
-        color: rgba(58, 36, 24, 0.52);
-        font-size: 12px;
-        font-weight: 900;
-      }
-
-      .pageDots {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .pageDot {
-        width: 9px;
-        height: 9px;
-        border: 0;
-        border-radius: 999px;
-        padding: 0;
-        background: rgba(58, 36, 24, 0.25);
-        cursor: pointer;
-        transition:
-          width 0.18s ease,
-          background 0.18s ease,
-          transform 0.18s ease;
-      }
-
-      .pageDot.active {
-        width: 24px;
-        background: var(--bubblegum);
-      }
-
-      .pageDot:hover {
-        transform: scale(1.12);
       }
 
       .legalFooter {
@@ -1187,8 +906,7 @@
           0 0 20px rgba(225, 48, 108, 0.10);
       }
 
-      html[data-theme="dark"] h1,
-      html[data-theme="dark"] .secretTitle {
+      html[data-theme="dark"] h1 {
         color: white;
         text-shadow: none;
       }
@@ -1214,15 +932,6 @@
           0 8px 22px rgba(0, 0, 0, 0.35);
       }
 
-      html[data-theme="dark"] .mainProfile {
-        background: linear-gradient(135deg, #ff8c00, #ff4f00);
-        border: 1px solid rgba(255, 255, 255, 0.24);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.07) inset,
-          0 0 32px rgba(255, 140, 0, 0.42),
-          0 10px 24px rgba(0, 0, 0, 0.34);
-      }
-
       html[data-theme="dark"] .instagram {
         background: linear-gradient(135deg, #e1306c, #8f1d7a);
         border: 1px solid rgba(255, 255, 255, 0.20);
@@ -1238,6 +947,12 @@
         border-color: rgba(255, 255, 255, 0.34);
       }
 
+      html[data-theme="dark"] .snapchat {
+        background: linear-gradient(135deg, #fffc00, #ffb000);
+        color: #1d1600;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+      }
+
       html[data-theme="dark"] .telegram {
         background: linear-gradient(135deg, #4f6f8d, #2f3d4b);
         color: white;
@@ -1247,46 +962,6 @@
       html[data-theme="dark"] .telegram:hover {
         background: linear-gradient(135deg, #5b7d9d, #384858);
         border-color: rgba(255, 255, 255, 0.30);
-      }
-
-      html[data-theme="dark"] .secretCard {
-        background:
-          radial-gradient(circle at 18% 10%, rgba(255, 252, 0, 0.13) 0%, transparent 34%),
-          radial-gradient(circle at 88% 22%, rgba(225, 48, 108, 0.18) 0%, transparent 34%),
-          rgba(14, 14, 18, 0.86);
-      }
-
-      html[data-theme="dark"] .secretBadge,
-      html[data-theme="dark"] .miniPill {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        color: rgba(255, 255, 255, 0.74);
-      }
-
-      html[data-theme="dark"] .secretCopy {
-        color: rgba(255, 255, 255, 0.66);
-      }
-
-      html[data-theme="dark"] .secretNote {
-        color: rgba(255, 255, 255, 0.42);
-      }
-
-      html[data-theme="dark"] .snapchat {
-        background: linear-gradient(135deg, #fffc00, #ffb000);
-        color: #1d1600;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-      }
-
-      html[data-theme="dark"] .swipeControls {
-        color: rgba(255, 255, 255, 0.46);
-      }
-
-      html[data-theme="dark"] .pageDot {
-        background: rgba(255, 255, 255, 0.24);
-      }
-
-      html[data-theme="dark"] .pageDot.active {
-        background: #ff8c00;
       }
 
       html[data-theme="dark"] .legalBox {
@@ -1315,7 +990,6 @@
 
       html[data-theme="dark"] .btn:focus-visible,
       html[data-theme="dark"] .themeToggle:focus-visible,
-      html[data-theme="dark"] .pageDot:focus-visible,
       html[data-theme="dark"] .legalButton:focus-visible,
       html[data-theme="dark"] .legalClose:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.95);
@@ -1329,15 +1003,6 @@
 
         .wrap {
           padding: 16px;
-        }
-
-        .swipeShell {
-          padding: 6px 0 18px;
-          margin: -6px 0 0;
-        }
-
-        .panel {
-          flex-basis: 100%;
         }
 
         .card {
@@ -1355,10 +1020,6 @@
           font-size: 36px;
         }
 
-        .secretTitle {
-          font-size: 29px;
-        }
-
         .bio {
           font-size: 15px;
         }
@@ -1373,163 +1034,98 @@
         .links {
           gap: 12px;
         }
-
-        .secretMini {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
   </head>
 
   <body>
     <main class="wrap">
-      <div class="swipeShell" id="swipeShell" aria-label="Kyu Crush swipe hub">
-        <div class="swipeTrack">
-          <section class="card panel mainCard" aria-label="Main Kyu Crush links">
-            <button
-              class="themeToggle"
-              type="button"
-              onclick="toggleTheme()"
-              aria-label="Toggle color mode"
-            >
-              <span class="themeIcon">🌙</span>
-              <span class="themeLabel">Dark</span>
-            </button>
+      <section class="card mainCard" aria-label="Main Kyu Crush links">
+        <button
+          class="themeToggle"
+          type="button"
+          onclick="toggleTheme()"
+          aria-label="Toggle color mode"
+        >
+          <span class="themeIcon">🌙</span>
+          <span class="themeLabel">Dark</span>
+        </button>
 
-            <img
-              id="profileImage"
-              class="profile"
-              src="1x1_lightpic.jpg"
-              alt="Kyu Crush profile picture"
-            />
+        <img
+          id="profileImage"
+          class="profile"
+          src="1x1_lightpic.jpg"
+          alt="Kyu Crush profile picture"
+        />
 
-            <h1>Kyu Crush</h1>
+        <h1>Kyu Crush</h1>
 
-            <p class="bio">🍒 Your daily little crush.</p>
-            <p class="trust">sunny mood • soft tease • sweet energy</p>
-            <p class="ageNote">
-              Some links may contain adult content. 18+ only.
-            </p>
+        <p class="bio">🍒 Your daily little crush.</p>
+        <p class="trust">sunny mood • soft tease • sweet energy</p>
+        <p class="ageNote">
+          Some links may contain adult content. 18+ only.
+        </p>
 
-            <div class="links">
-              <a
-                href="https://xhamster.com/videos/blond-twink-filled-in-a-forest-lookout-xhKO3DS"
-                class="btn mainProfile"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open featured Kyu Crush video"
-                data-link-key="featuredVideo"
-              >
-                <span class="btnText">
-                  <span class="btnTitle">Watch Kyu Crush 🍒</span>
-                  <span class="btnSub">featured video</span>
-                </span>
-              </a>
+        <div class="links">
+          <a
+            href="https://www.instagram.com/kyu_crush/"
+            class="btn instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Instagram"
+            data-link-key="instagram"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Instagram ☀️</span>
+              <span class="btnSub">daily glow</span>
+            </span>
+          </a>
 
-              <a
-                href="https://www.instagram.com/kyu_crush/"
-                class="btn instagram"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Instagram"
-                data-link-key="instagram"
-              >
-                <span class="btnText">
-                  <span class="btnTitle">Instagram ☀️</span>
-                  <span class="btnSub">daily glow</span>
-                </span>
-              </a>
+          <a
+            href="https://x.com/kyu_crush"
+            class="btn twitter"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open X"
+            data-link-key="x"
+          >
+            <span class="btnText">
+              <span class="btnTitle">X / Twitter 💬</span>
+              <span class="btnSub">teasers & updates</span>
+            </span>
+          </a>
 
-              <a
-                href="https://x.com/kyu_crush"
-                class="btn twitter"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open X"
-                data-link-key="x"
-              >
-                <span class="btnText">
-                  <span class="btnTitle">X / Twitter 💬</span>
-                  <span class="btnSub">teasers & updates</span>
-                </span>
-              </a>
+          <a
+            href="https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
+            class="btn snapchat"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Snapchat"
+            data-link-key="snapchat"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Snapchat 👻</span>
+              <span class="btnSub">quick snaps</span>
+            </span>
+          </a>
 
-              <a
-                href="https://t.me/kyu_crush"
-                class="btn telegram"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Telegram"
-                data-link-key="telegram"
-              >
-                <span class="btnText">
-                  <span class="btnTitle">Telegram 🔒</span>
-                  <span class="btnSub">private updates</span>
-                </span>
-              </a>
-            </div>
-
-            <p class="footer">Kyu Crush Hub</p>
-          </section>
-
-          <section class="card panel secretCard" aria-label="Secret Kyu Crush area">
-            <div class="secretBadge">hidden side</div>
-
-            <h2 class="secretTitle">Secret Crush Area 🍒</h2>
-
-            <p class="secretCopy">
-              You found the side door. Quick snaps, softer chaos, small updates.
-            </p>
-
-            <div class="secretMini">
-              <div class="miniPill">👻 Snapchat</div>
-              <div class="miniPill">🍒 Hidden updates</div>
-            </div>
-
-            <div class="links">
-              <a
-                href="https://www.snapchat.com/add/kyuxtx?share_id=HX8_dVJONOk&locale=en-GB"
-                class="btn snapchat"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Snapchat"
-                data-link-key="snapchat"
-              >
-                <span class="btnText">
-                  <span class="btnTitle">Add me on Snapchat 👻</span>
-                  <span class="btnSub">secret little crush</span>
-                </span>
-              </a>
-            </div>
-
-            <p class="secretNote">
-              Tiny secret area. Not a casino coupon graveyard. Just the good door.
-            </p>
-
-            <p class="footer">Swipe back for main links</p>
-          </section>
+          <a
+            href="https://t.me/kyu_crush"
+            class="btn telegram"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Telegram"
+            data-link-key="telegram"
+          >
+            <span class="btnText">
+              <span class="btnTitle">Telegram 🔒</span>
+              <span class="btnSub">private updates</span>
+            </span>
+          </a>
         </div>
-      </div>
 
-      <div class="swipeControls" aria-label="Swipe navigation">
-        <div class="pageDots">
-          <button
-            class="pageDot active"
-            type="button"
-            onclick="scrollToPanel(0)"
-            aria-label="Show main links"
-            aria-current="true"
-          ></button>
-          <button
-            class="pageDot"
-            type="button"
-            onclick="scrollToPanel(1)"
-            aria-label="Show secret area"
-            aria-current="false"
-          ></button>
-        </div>
-        <span>Swipe right for secret 🍒</span>
-      </div>
+        <p class="footer">Kyu Crush Hub</p>
+      </section>
 
       <footer class="legalFooter" aria-label="Legal footer">
         <button class="legalButton" type="button" onclick="openLegalPanel('imprint')">
@@ -1648,11 +1244,11 @@
 
           <h3>Google Analytics</h3>
           <p>
-            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, Panel-Aufrufe, ausgehende Link-Klicks, Hauptbutton-Klicks, Social-Klicks, Button-Impressionen, Theme-Nutzung, Swipe-Interaktionen, Zeit bis zum ersten Klick und Aufrufe des versteckten Bereichs.
+            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, ausgehende Link-Klicks, Social-Klicks, Button-Impressionen, Theme-Nutzung und Zeit bis zum ersten Klick.
           </p>
 
           <p lang="en">
-            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, panel views, outbound link clicks, primary button clicks, social clicks, button impressions, theme usage, swipe interactions, time to first click and views of the hidden area.
+            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, outbound link clicks, social clicks, button impressions, theme usage and time to first click.
           </p>
 
           <p>
@@ -1661,11 +1257,11 @@
 
           <h3>Ausgehende Links / Outgoing links</h3>
           <p>
-            Diese Website enthält Links zu externen Plattformen, darunter Instagram, X, Telegram, Snapchat und xHamster. Beim Öffnen dieser Links gelten die Datenschutzbestimmungen der jeweiligen externen Anbieter.
+            Diese Website enthält Links zu externen Plattformen, darunter Instagram, X, Snapchat und Telegram. Beim Öffnen dieser Links gelten die Datenschutzbestimmungen der jeweiligen externen Anbieter.
           </p>
 
           <p lang="en">
-            This website contains links to external platforms, including Instagram, X, Telegram, Snapchat and xHamster. When opening these links, the privacy policies of the respective external providers apply.
+            This website contains links to external platforms, including Instagram, X, Snapchat and Telegram. When opening these links, the privacy policies of the respective external providers apply.
           </p>
 
           <h3>Inhalte ab 18 / Adult content</h3>
