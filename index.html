@@ -547,16 +547,19 @@
       .card {
         position: relative;
         background: rgba(255, 250, 240, 0.88);
-        border: 2px solid rgba(255, 255, 255, 0.76);
+        border: 0;
         border-radius: 30px;
         padding: 42px 22px 24px;
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.46) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.72) inset,
+          0 0 0 2px rgba(255, 255, 255, 0.28) inset,
           inset 0 18px 42px rgba(255, 255, 255, 0.26),
           inset 0 -24px 44px rgba(255, 79, 163, 0.045);
         backdrop-filter: blur(13px);
         -webkit-backdrop-filter: blur(13px);
         isolation: isolate;
+        overflow: hidden;
+        transform: translateZ(0);
       }
 
       .themeToggle {
@@ -564,7 +567,7 @@
         top: 16px;
         right: 16px;
         z-index: 3;
-        border: 2px solid rgba(255, 255, 255, 0.72);
+        border: 0;
         background: rgba(255, 255, 255, 0.50);
         color: var(--choco);
         border-radius: 999px;
@@ -576,13 +579,14 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        box-shadow: 0 8px 18px rgba(58, 36, 24, 0.12);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.72) inset,
+          0 8px 18px rgba(58, 36, 24, 0.12);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         transition:
           transform 0.18s ease,
-          background 0.22s ease,
-          border-color 0.22s ease;
+          background 0.22s ease;
       }
 
       .themeToggle:hover {
@@ -668,6 +672,7 @@
         width: 100%;
         min-height: 58px;
         padding: 17px 18px;
+        border: 0;
         border-radius: 20px;
         text-decoration: none;
         font-size: 17px;
@@ -676,23 +681,35 @@
         letter-spacing: 0.01em;
         color: white;
         text-align: center;
-        border: 2px solid rgba(255, 255, 255, 0.58);
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.20) inset,
           0 10px 22px rgba(58, 36, 24, 0.16);
         transition:
           transform 0.18s ease,
           opacity 0.18s ease,
           box-shadow 0.22s ease,
-          border-color 0.22s ease,
           background 0.22s ease;
+        transform: translateZ(0);
+        isolation: isolate;
+      }
+
+      .btn::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        border-radius: inherit;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.42) inset,
+          0 0 0 2px rgba(255, 255, 255, 0.10) inset;
+        pointer-events: none;
       }
 
       .btn:hover {
         transform: translateY(-2px) scale(1.018);
         opacity: 1;
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.24) inset,
           0 14px 26px rgba(58, 36, 24, 0.19);
       }
 
@@ -713,6 +730,7 @@
         position: absolute;
         top: 0;
         left: -110%;
+        z-index: 1;
         width: 42%;
         height: 100%;
         background: linear-gradient(
@@ -730,6 +748,8 @@
       }
 
       .btnText {
+        position: relative;
+        z-index: 3;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -762,7 +782,7 @@
       .instagram {
         background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.16) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
           0 0 30px rgba(255, 79, 163, 0.28),
           0 12px 24px rgba(58, 36, 24, 0.18);
       }
@@ -842,8 +862,10 @@
         padding: 22px;
         background: rgba(255, 250, 240, 0.97);
         color: var(--choco);
-        border: 2px solid rgba(255, 255, 255, 0.72);
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+        border: 0;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.72) inset,
+          0 24px 60px rgba(0, 0, 0, 0.26);
       }
 
       .legalHeader {
@@ -957,8 +979,10 @@
             rgba(13, 1, 24, 1) 92%,
             rgba(9, 0, 17, 1) 100%
           );
-        border: 2px solid rgba(255, 255, 255, 0.045);
+        border: 0;
         box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.052) inset,
+          0 0 0 2px rgba(255, 255, 255, 0.018) inset,
           0 30px 72px rgba(0, 0, 0, 0.54),
           inset 0 1px 0 rgba(255, 250, 240, 0.075);
       }
@@ -981,8 +1005,9 @@
       html[data-theme="dark"] .card::after {
         content: "";
         position: absolute;
-        inset: 0;
+        inset: 1px;
         z-index: 1;
+        border-radius: 29px;
         background:
           linear-gradient(180deg, rgba(255, 250, 240, 0.040), transparent 34%, transparent 78%, rgba(3, 0, 8, 0.14) 100%),
           linear-gradient(145deg, transparent 0%, transparent 38%, rgba(255, 196, 0, 0.018) 51%, transparent 64%, transparent 100%);
@@ -1006,9 +1031,11 @@
         right: 16px;
         z-index: 3;
         background: rgba(18, 0, 31, 0.52);
-        border: 2px solid transparent;
+        border: 0;
         color: #ffe89a;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+          0 10px 24px rgba(0, 0, 0, 0.34);
       }
 
       html[data-theme="dark"] .themeToggle:hover {
@@ -1046,18 +1073,24 @@
       }
 
       html[data-theme="dark"] .btn {
-        border: 2px solid rgba(255, 255, 255, 0.055);
-        background-clip: padding-box;
+        border: 0;
+        background-clip: border-box;
         box-shadow:
-          inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+          0 0 0 1px rgba(255, 255, 255, 0.08) inset,
           inset 0 1px 0 rgba(255, 255, 255, 0.10),
           0 10px 22px rgba(0, 0, 0, 0.34);
+      }
+
+      html[data-theme="dark"] .btn::after {
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.13) inset,
+          0 0 0 2px rgba(255, 255, 255, 0.025) inset;
       }
 
       html[data-theme="dark"] .btn:hover {
         filter: brightness(1.06);
         box-shadow:
-          inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+          0 0 0 1px rgba(255, 255, 255, 0.11) inset,
           inset 0 1px 0 rgba(255, 255, 255, 0.13),
           0 14px 26px rgba(0, 0, 0, 0.40);
       }
@@ -1105,9 +1138,11 @@
 
       html[data-theme="dark"] .legalBox {
         background: rgba(16, 4, 30, 0.96);
-        border: 2px solid rgba(255, 255, 255, 0.045);
+        border: 0;
         color: #fffaf0;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.052) inset,
+          0 24px 60px rgba(0, 0, 0, 0.42);
       }
 
       html[data-theme="dark"] .legalContent p,
@@ -1166,6 +1201,10 @@
         .card {
           padding: 42px 18px 20px;
           border-radius: 26px;
+        }
+
+        html[data-theme="dark"] .card::after {
+          border-radius: 25px;
         }
 
         .themeToggle {
