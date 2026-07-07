@@ -861,23 +861,32 @@
 
       html[data-theme="dark"] body {
         background:
-          linear-gradient(118deg, transparent 0%, transparent 18%, rgba(255, 196, 0, 0.055) 26%, transparent 38%, transparent 100%),
-          linear-gradient(62deg, transparent 0%, transparent 52%, rgba(208, 0, 139, 0.085) 63%, transparent 74%, transparent 100%),
-          linear-gradient(145deg, rgba(74, 22, 94, 0.82) 0%, rgba(29, 7, 48, 0.95) 48%, rgba(8, 0, 17, 1) 100%);
+          linear-gradient(125deg, transparent 0%, transparent 18%, rgba(255, 196, 0, 0.060) 25%, transparent 34%, transparent 100%),
+          linear-gradient(58deg, transparent 0%, transparent 46%, rgba(208, 0, 139, 0.085) 56%, transparent 68%, transparent 100%),
+          linear-gradient(155deg, rgba(84, 18, 104, 0.82) 0%, rgba(29, 7, 48, 0.96) 48%, rgba(8, 0, 17, 1) 100%);
         color: #fffaf0;
       }
 
       html[data-theme="dark"] body::before {
         content: "";
         position: fixed;
-        inset: -20%;
+        inset: -30%;
         background:
-          linear-gradient(112deg, transparent 0%, transparent 33%, rgba(255, 196, 0, 0.10) 43%, transparent 56%, transparent 100%),
-          linear-gradient(72deg, transparent 0%, transparent 28%, rgba(208, 0, 139, 0.12) 46%, transparent 62%, transparent 100%);
-        filter: blur(28px);
+          conic-gradient(
+            from 218deg at 50% 50%,
+            transparent 0deg,
+            rgba(255, 196, 0, 0.08) 34deg,
+            transparent 76deg,
+            transparent 138deg,
+            rgba(208, 0, 139, 0.11) 184deg,
+            transparent 236deg,
+            transparent 360deg
+          );
+        filter: blur(34px);
         opacity: 0.42;
         pointer-events: none;
         z-index: 0;
+        transform: rotate(-8deg) scale(1.12);
       }
 
       html[data-theme="dark"] body::after {
@@ -885,8 +894,9 @@
         position: fixed;
         inset: 0;
         background:
-          linear-gradient(180deg, rgba(255, 250, 240, 0.035), transparent 28%, transparent 100%);
-        opacity: 0.36;
+          linear-gradient(90deg, rgba(255, 250, 240, 0.025), transparent 18%, transparent 82%, rgba(208, 0, 139, 0.035)),
+          linear-gradient(180deg, rgba(255, 250, 240, 0.030), transparent 24%, transparent 100%);
+        opacity: 0.42;
         pointer-events: none;
         z-index: 0;
       }
@@ -894,7 +904,7 @@
       html[data-theme="dark"] .card {
         overflow: hidden;
         background:
-          linear-gradient(135deg, rgba(255, 250, 240, 0.060) 0%, transparent 34%),
+          linear-gradient(132deg, rgba(255, 250, 240, 0.060) 0%, transparent 30%),
           linear-gradient(180deg, rgba(42, 14, 74, 0.94) 0%, rgba(16, 4, 30, 0.96) 100%);
         border: 0;
         box-shadow:
@@ -907,14 +917,23 @@
       html[data-theme="dark"] .card::before {
         content: "";
         position: absolute;
-        inset: -26%;
+        inset: -36%;
         z-index: 1;
         background:
-          linear-gradient(122deg, transparent 0%, transparent 43%, rgba(255, 196, 0, 0.10) 49%, transparent 57%, transparent 100%),
-          linear-gradient(68deg, transparent 0%, transparent 34%, rgba(208, 0, 139, 0.11) 45%, transparent 58%, transparent 100%);
-        filter: blur(18px);
-        opacity: 0.52;
+          conic-gradient(
+            from 232deg at 50% 50%,
+            transparent 0deg,
+            rgba(255, 196, 0, 0.10) 38deg,
+            transparent 82deg,
+            transparent 140deg,
+            rgba(208, 0, 139, 0.13) 188deg,
+            transparent 244deg,
+            transparent 360deg
+          );
+        filter: blur(20px);
+        opacity: 0.54;
         pointer-events: none;
+        transform: rotate(-12deg);
       }
 
       html[data-theme="dark"] .card::after {
@@ -923,7 +942,8 @@
         inset: 0;
         z-index: 1;
         background:
-          linear-gradient(180deg, rgba(255, 250, 240, 0.045), transparent 34%, transparent 100%);
+          linear-gradient(180deg, rgba(255, 250, 240, 0.045), transparent 34%, transparent 100%),
+          linear-gradient(115deg, transparent 0%, transparent 42%, rgba(255, 196, 0, 0.035) 50%, transparent 58%, transparent 100%);
         pointer-events: none;
       }
 
