@@ -310,7 +310,7 @@
 
         themeColorMeta.setAttribute(
           "content",
-          theme === "dark" ? "#050505" : "#fff3d6"
+          theme === "dark" ? "#1a0730" : "#fff3d6"
         );
       }
 
@@ -998,6 +998,196 @@
       html[data-theme="dark"] .legalClose:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.95);
         outline-offset: 3px;
+      }
+
+      /* Dark mode experiment: Thai Airways inspired deco */
+      html[data-theme="dark"] body {
+        background:
+          radial-gradient(circle at 18% 8%, rgba(208, 0, 139, 0.24) 0%, transparent 30%),
+          radial-gradient(circle at 82% 10%, rgba(255, 196, 0, 0.14) 0%, transparent 28%),
+          radial-gradient(circle at 50% 100%, rgba(111, 75, 184, 0.22) 0%, transparent 36%),
+          linear-gradient(135deg, #2a0c4a 0%, #1a0730 52%, #0b0015 100%);
+        color: #fffaf0;
+      }
+
+      html[data-theme="dark"] body::before {
+        background:
+          radial-gradient(circle, rgba(255, 250, 240, 0.10) 1px, transparent 2px),
+          radial-gradient(circle at 50% 0%, rgba(255, 196, 0, 0.06) 0%, transparent 42%);
+        background-size: 42px 42px, 100% 100%;
+        opacity: 0.85;
+        mask-image: radial-gradient(circle at center, black 0%, transparent 78%);
+      }
+
+      html[data-theme="dark"] body::after {
+        width: 540px;
+        height: 540px;
+        right: calc(50% - 520px);
+        top: 8%;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 44% 44%, rgba(255, 196, 0, 0.12) 0%, transparent 34%),
+          radial-gradient(circle at 62% 58%, rgba(208, 0, 139, 0.14) 0%, transparent 38%);
+        filter: blur(18px);
+        opacity: 0.9;
+      }
+
+      html[data-theme="dark"] .card {
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% -14%, rgba(255, 196, 0, 0.12) 0%, transparent 38%),
+          radial-gradient(circle at 14% 20%, rgba(208, 0, 139, 0.12) 0%, transparent 34%),
+          linear-gradient(180deg, rgba(42, 14, 74, 0.94) 0%, rgba(16, 4, 30, 0.96) 100%);
+        border: 0;
+        box-shadow:
+          0 26px 66px rgba(0, 0, 0, 0.48),
+          0 0 46px rgba(208, 0, 139, 0.10),
+          inset 0 1px 0 rgba(255, 250, 240, 0.08),
+          inset 0 -30px 70px rgba(255, 196, 0, 0.035);
+      }
+
+      html[data-theme="dark"] .card::before {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        right: -92px;
+        top: -92px;
+        z-index: 1;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 42% 46%, rgba(208, 0, 139, 0.54) 0%, rgba(208, 0, 139, 0.54) 13%, transparent 14%),
+          radial-gradient(circle at 68% 34%, rgba(255, 196, 0, 0.46) 0%, transparent 22%),
+          radial-gradient(circle at 32% 72%, rgba(255, 196, 0, 0.34) 0%, transparent 24%);
+        opacity: 0.34;
+        pointer-events: none;
+      }
+
+      html[data-theme="dark"] .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          linear-gradient(135deg, rgba(255, 250, 240, 0.055), transparent 36%),
+          radial-gradient(circle at 50% 100%, rgba(208, 0, 139, 0.07) 0%, transparent 46%);
+        pointer-events: none;
+      }
+
+      html[data-theme="dark"] .themeToggle,
+      html[data-theme="dark"] .profile,
+      html[data-theme="dark"] h1,
+      html[data-theme="dark"] .bio,
+      html[data-theme="dark"] .trust,
+      html[data-theme="dark"] .ageNote,
+      html[data-theme="dark"] .links,
+      html[data-theme="dark"] .footer {
+        position: relative;
+        z-index: 2;
+      }
+
+      html[data-theme="dark"] .themeToggle {
+        background: rgba(18, 0, 31, 0.52);
+        border: 0;
+        color: #ffe89a;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+      }
+
+      html[data-theme="dark"] .themeToggle:hover {
+        background: rgba(18, 0, 31, 0.72);
+      }
+
+      html[data-theme="dark"] .profile {
+        border: 3px solid #ffc400;
+        box-shadow:
+          0 0 0 6px rgba(208, 0, 139, 0.18),
+          0 16px 34px rgba(0, 0, 0, 0.42),
+          0 0 28px rgba(255, 196, 0, 0.16);
+      }
+
+      html[data-theme="dark"] h1 {
+        color: #ffffff;
+        text-shadow:
+          2px 3px 0 rgba(208, 0, 139, 0.66),
+          0 0 24px rgba(255, 196, 0, 0.10);
+      }
+
+      html[data-theme="dark"] .bio {
+        color: rgba(255, 250, 240, 0.86);
+      }
+
+      html[data-theme="dark"] .trust {
+        color: rgba(255, 250, 240, 0.60);
+      }
+
+      html[data-theme="dark"] .ageNote {
+        color: rgba(255, 250, 240, 0.46);
+      }
+
+      html[data-theme="dark"] .btn {
+        border: 0;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.34);
+      }
+
+      html[data-theme="dark"] .btn:hover {
+        filter: brightness(1.06);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.40);
+      }
+
+      html[data-theme="dark"] .snapchat {
+        background: linear-gradient(135deg, #ffc400, #ffe89a);
+        color: #1b082a;
+      }
+
+      html[data-theme="dark"] .instagram {
+        background: linear-gradient(135deg, #d0008b, #5f238f);
+        color: #ffffff;
+      }
+
+      html[data-theme="dark"] .twitter {
+        background: linear-gradient(135deg, #211034, #09000f);
+        color: #ffffff;
+      }
+
+      html[data-theme="dark"] .twitter:hover {
+        background: linear-gradient(135deg, #2b144a, #11001f);
+      }
+
+      html[data-theme="dark"] .telegram {
+        background: linear-gradient(135deg, #4b1f78, #32135f);
+        color: #ffffff;
+      }
+
+      html[data-theme="dark"] .telegram:hover {
+        background: linear-gradient(135deg, #5a2a8d, #3b176d);
+      }
+
+      html[data-theme="dark"] .footer,
+      html[data-theme="dark"] .legalFooter {
+        color: rgba(255, 250, 240, 0.50);
+      }
+
+      html[data-theme="dark"] .legalButton:hover {
+        color: #ffc400;
+      }
+
+      html[data-theme="dark"] .legalOverlay {
+        background: rgba(18, 0, 31, 0.76);
+      }
+
+      html[data-theme="dark"] .legalBox {
+        background: rgba(16, 4, 30, 0.96);
+        border: 0;
+        color: #fffaf0;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+      }
+
+      html[data-theme="dark"] .legalContent h3 {
+        color: #ffc400;
+      }
+
+      html[data-theme="dark"] .legalContent a {
+        color: #ffe89a;
       }
 
       @media (max-width: 480px) {
