@@ -861,148 +861,6 @@
 
       html[data-theme="dark"] body {
         background:
-          radial-gradient(circle at 50% 0%, rgba(120, 42, 255, 0.18) 0%, rgba(120, 42, 255, 0.05) 28%, transparent 52%),
-          radial-gradient(circle at 50% 100%, rgba(225, 48, 108, 0.16) 0%, rgba(225, 48, 108, 0.05) 30%, transparent 56%),
-          #050505;
-        color: white;
-      }
-
-      html[data-theme="dark"] body::before {
-        background:
-          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-        background-size: 38px 38px;
-        opacity: 1;
-        mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
-      }
-
-      html[data-theme="dark"] body::after {
-        width: auto;
-        height: auto;
-        right: 0;
-        top: 0;
-        border-radius: 0;
-        background:
-          radial-gradient(circle at top center, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 14%, transparent 38%);
-      }
-
-      html[data-theme="dark"] .card {
-        background: rgba(14, 14, 18, 0.86);
-        border: 1px solid rgba(255, 255, 255, 0.11);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-          inset 0 18px 42px rgba(255, 255, 255, 0.025),
-          inset 0 -28px 56px rgba(156, 66, 255, 0.06);
-      }
-
-      html[data-theme="dark"] .themeToggle {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: white;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-      }
-
-      html[data-theme="dark"] .profile {
-        border: 2px solid rgba(255, 255, 255, 0.13);
-        box-shadow:
-          0 0 0 4px rgba(255, 255, 255, 0.03),
-          0 0 30px rgba(156, 66, 255, 0.16),
-          0 0 20px rgba(225, 48, 108, 0.10);
-      }
-
-      html[data-theme="dark"] h1 {
-        color: white;
-        text-shadow: none;
-      }
-
-      html[data-theme="dark"] .bio {
-        color: rgba(255, 255, 255, 0.74);
-      }
-
-      html[data-theme="dark"] .trust,
-      html[data-theme="dark"] .ageNote {
-        color: rgba(255, 255, 255, 0.46);
-      }
-
-      html[data-theme="dark"] .footer,
-      html[data-theme="dark"] .legalFooter {
-        color: rgba(255, 255, 255, 0.48);
-      }
-
-      html[data-theme="dark"] .btn {
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-          0 8px 22px rgba(0, 0, 0, 0.35);
-      }
-
-      html[data-theme="dark"] .snapchat {
-        background: linear-gradient(135deg, #fffc00, #ffb000);
-        color: #1d1600;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-      }
-
-      html[data-theme="dark"] .instagram {
-        background: linear-gradient(135deg, #e1306c, #8f1d7a);
-        border: 1px solid rgba(255, 255, 255, 0.20);
-      }
-
-      html[data-theme="dark"] .twitter {
-        background: linear-gradient(135deg, #2a2a2a, #111111);
-        border: 1px solid rgba(255, 255, 255, 0.24);
-      }
-
-      html[data-theme="dark"] .twitter:hover {
-        background: linear-gradient(135deg, #343434, #1d1d1d);
-        border-color: rgba(255, 255, 255, 0.34);
-      }
-
-      html[data-theme="dark"] .telegram {
-        background: linear-gradient(135deg, #4f6f8d, #2f3d4b);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-      }
-
-      html[data-theme="dark"] .telegram:hover {
-        background: linear-gradient(135deg, #5b7d9d, #384858);
-        border-color: rgba(255, 255, 255, 0.30);
-      }
-
-      html[data-theme="dark"] .legalBox {
-        background: rgba(14, 14, 18, 0.96);
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        color: white;
-      }
-
-      html[data-theme="dark"] .legalContent p,
-      html[data-theme="dark"] .legalContent li {
-        color: rgba(255, 255, 255, 0.66);
-      }
-
-      html[data-theme="dark"] .legalContent strong {
-        color: rgba(255, 255, 255, 0.90);
-      }
-
-      html[data-theme="dark"] .mutedLegal {
-        color: rgba(255, 255, 255, 0.50);
-      }
-
-      html[data-theme="dark"] .legalClose {
-        background: rgba(255, 255, 255, 0.10);
-        color: white;
-      }
-
-      html[data-theme="dark"] .btn:focus-visible,
-      html[data-theme="dark"] .themeToggle:focus-visible,
-      html[data-theme="dark"] .legalButton:focus-visible,
-      html[data-theme="dark"] .legalClose:focus-visible {
-        outline: 2px solid rgba(255, 255, 255, 0.95);
-        outline-offset: 3px;
-      }
-
-      /* Dark mode experiment: Thai Airways inspired deco */
-      html[data-theme="dark"] body {
-        background:
           radial-gradient(circle at 18% 8%, rgba(208, 0, 139, 0.24) 0%, transparent 30%),
           radial-gradient(circle at 82% 10%, rgba(255, 196, 0, 0.14) 0%, transparent 28%),
           radial-gradient(circle at 50% 100%, rgba(111, 75, 184, 0.22) 0%, transparent 36%),
@@ -1011,15 +869,18 @@
       }
 
       html[data-theme="dark"] body::before {
-        background:
-          radial-gradient(circle at 50% 0%, rgba(255, 196, 0, 0.06) 0%, transparent 42%),
-          linear-gradient(115deg, transparent 0%, transparent 38%, rgba(208, 0, 139, 0.055) 38.4%, transparent 39.4%, transparent 100%);
-        background-size: 100% 100%, 100% 100%;
-        opacity: 0.72;
-        mask-image: radial-gradient(circle at center, black 0%, transparent 78%);
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: none;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
       }
 
       html[data-theme="dark"] body::after {
+        content: "";
+        position: fixed;
         width: 540px;
         height: 540px;
         right: calc(50% - 520px);
@@ -1030,6 +891,8 @@
           radial-gradient(circle at 62% 58%, rgba(208, 0, 139, 0.14) 0%, transparent 38%);
         filter: blur(18px);
         opacity: 0.9;
+        pointer-events: none;
+        z-index: 0;
       }
 
       html[data-theme="dark"] .card {
@@ -1131,16 +994,17 @@
       }
 
       html[data-theme="dark"] .btn {
-        border: 2px solid rgba(255, 255, 255, 0.58);
+        border: 1px solid rgba(255, 255, 255, 0.26);
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.07) inset,
           0 10px 22px rgba(0, 0, 0, 0.34);
       }
 
       html[data-theme="dark"] .btn:hover {
         filter: brightness(1.06);
+        border-color: rgba(255, 255, 255, 0.36);
         box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+          0 0 0 1px rgba(255, 255, 255, 0.10) inset,
           0 14px 26px rgba(0, 0, 0, 0.40);
       }
 
@@ -1192,12 +1056,38 @@
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
       }
 
+      html[data-theme="dark"] .legalContent p,
+      html[data-theme="dark"] .legalContent li {
+        color: rgba(255, 255, 255, 0.66);
+      }
+
+      html[data-theme="dark"] .legalContent strong {
+        color: rgba(255, 255, 255, 0.90);
+      }
+
+      html[data-theme="dark"] .mutedLegal {
+        color: rgba(255, 255, 255, 0.50);
+      }
+
+      html[data-theme="dark"] .legalClose {
+        background: rgba(255, 255, 255, 0.10);
+        color: white;
+      }
+
       html[data-theme="dark"] .legalContent h3 {
         color: #ffc400;
       }
 
       html[data-theme="dark"] .legalContent a {
         color: #ffe89a;
+      }
+
+      html[data-theme="dark"] .btn:focus-visible,
+      html[data-theme="dark"] .themeToggle:focus-visible,
+      html[data-theme="dark"] .legalButton:focus-visible,
+      html[data-theme="dark"] .legalClose:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.95);
+        outline-offset: 3px;
       }
 
       @media (max-width: 480px) {
