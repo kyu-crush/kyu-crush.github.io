@@ -477,11 +477,31 @@
         }
 
         50% {
-          transform: translate3d(2%, 1%, 0) scale(1.14);
+          transform: translate3d(2%, 1%, 0) scale(1.13);
         }
 
         100% {
-          transform: translate3d(-1%, 2%, 0) scale(1.1);
+          transform: translate3d(-1%, 2%, 0) scale(1.09);
+        }
+      }
+
+      @keyframes ringSettle {
+        0% {
+          opacity: 0.45;
+          transform: scale(0.92);
+          filter: blur(2px) brightness(1.2);
+        }
+
+        55% {
+          opacity: 1;
+          transform: scale(1.035);
+          filter: blur(0) brightness(1.1);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scale(1);
+          filter: blur(0) brightness(1);
         }
       }
 
@@ -489,16 +509,50 @@
         0%,
         100% {
           box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.14) inset,
-            0 0 18px rgba(255, 196, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+            0 0 16px rgba(255, 196, 0, 0.10),
             0 12px 28px rgba(0, 0, 0, 0.32);
         }
 
         50% {
           box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-            0 0 26px rgba(208, 0, 139, 0.25),
-            0 14px 32px rgba(0, 0, 0, 0.38);
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 0 22px rgba(208, 0, 139, 0.18),
+            0 14px 30px rgba(0, 0, 0, 0.36);
+        }
+      }
+
+      @keyframes dotAssemble {
+        0% {
+          opacity: 0;
+          transform:
+            rotate(calc(var(--angle) - 38deg))
+            translate(34px)
+            scale(0.2);
+        }
+
+        42% {
+          opacity: 1;
+          transform:
+            rotate(var(--angle))
+            translate(68px)
+            scale(1);
+        }
+
+        72% {
+          opacity: 0.95;
+          transform:
+            rotate(var(--angle))
+            translate(61px)
+            scale(0.85);
+        }
+
+        100% {
+          opacity: 0;
+          transform:
+            rotate(var(--angle))
+            translate(61px)
+            scale(0.25);
         }
       }
 
@@ -573,6 +627,7 @@
           inset 0 -24px 44px rgba(255, 79, 163, 0.045);
         backdrop-filter: blur(13px);
         -webkit-backdrop-filter: blur(13px);
+        isolation: isolate;
       }
 
       .themeToggle {
@@ -612,12 +667,70 @@
         margin: 0 auto 18px;
         padding: 4px;
         border-radius: 50%;
+        background: transparent;
+        animation: profileGlow 4.8s ease-in-out infinite;
+      }
+
+      .profileFrame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: 50%;
         background:
-          linear-gradient(135deg, #ffc400 0%, #ffe89a 24%, #d0008b 58%, #6f4bb8 100%);
-        animation: profileGlow 4.4s ease-in-out infinite;
+          conic-gradient(
+            from 18deg,
+            #ffc400 0deg,
+            #ffe89a 48deg,
+            #ff7a3d 88deg,
+            #ff4fa3 140deg,
+            #d0008b 205deg,
+            #6f4bb8 286deg,
+            #ffc400 360deg
+          );
+        animation: ringSettle 1.15s cubic-bezier(0.18, 0.9, 0.24, 1) both;
+      }
+
+      .profileFrame::after {
+        content: "";
+        position: absolute;
+        inset: -5px;
+        z-index: -1;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, rgba(208, 0, 139, 0.24), transparent 68%);
+        filter: blur(8px);
+        opacity: 0.74;
+      }
+
+      .profileDots {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .profileDots span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 7px;
+        height: 7px;
+        margin: -3.5px 0 0 -3.5px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fff2a8, #ff4fa3);
+        box-shadow:
+          0 0 10px rgba(255, 196, 0, 0.36),
+          0 0 14px rgba(208, 0, 139, 0.24);
+        opacity: 0;
+        animation: dotAssemble 1.08s cubic-bezier(0.16, 0.9, 0.28, 1) both;
+        animation-delay: var(--delay);
       }
 
       .profile {
+        position: relative;
+        z-index: 2;
         width: 116px;
         height: 116px;
         object-fit: cover;
@@ -934,15 +1047,15 @@
           conic-gradient(
             from 145deg at 50% 50%,
             transparent 0deg,
-            rgba(255, 196, 0, 0.060) 36deg,
+            rgba(255, 196, 0, 0.052) 36deg,
             transparent 82deg,
-            rgba(135, 58, 255, 0.055) 146deg,
-            rgba(208, 0, 139, 0.095) 204deg,
+            rgba(135, 58, 255, 0.050) 146deg,
+            rgba(208, 0, 139, 0.080) 204deg,
             transparent 272deg,
             transparent 360deg
           );
         filter: blur(44px);
-        opacity: 0.50;
+        opacity: 0.44;
         pointer-events: none;
         z-index: 0;
         animation: cardAuraMove 20s ease-in-out infinite alternate;
@@ -953,10 +1066,10 @@
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(circle at 50% 0%, rgba(255, 250, 240, 0.050), transparent 35%),
-          linear-gradient(120deg, transparent 0%, transparent 42%, rgba(255, 250, 240, 0.028) 52%, transparent 63%, transparent 100%),
-          linear-gradient(180deg, rgba(255, 250, 240, 0.025), transparent 28%, transparent 100%);
-        opacity: 0.54;
+          radial-gradient(circle at 50% 0%, rgba(255, 250, 240, 0.044), transparent 35%),
+          linear-gradient(120deg, transparent 0%, transparent 42%, rgba(255, 250, 240, 0.022) 52%, transparent 63%, transparent 100%),
+          linear-gradient(180deg, rgba(255, 250, 240, 0.020), transparent 28%, transparent 100%);
+        opacity: 0.50;
         pointer-events: none;
         z-index: 0;
       }
@@ -964,15 +1077,19 @@
       html[data-theme="dark"] .card {
         overflow: hidden;
         background:
-          radial-gradient(circle at 18% 10%, rgba(255, 250, 240, 0.075), transparent 32%),
-          radial-gradient(circle at 86% 18%, rgba(208, 0, 139, 0.13), transparent 36%),
-          linear-gradient(180deg, rgba(56, 15, 84, 0.94) 0%, rgba(27, 6, 45, 0.98) 58%, rgba(12, 1, 23, 0.99) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.055);
+          radial-gradient(circle at 18% 10%, rgba(255, 250, 240, 0.070), transparent 32%),
+          radial-gradient(circle at 86% 18%, rgba(208, 0, 139, 0.115), transparent 36%),
+          linear-gradient(
+            180deg,
+            rgba(56, 15, 84, 0.94) 0%,
+            rgba(27, 6, 45, 0.98) 58%,
+            rgba(13, 1, 24, 1) 92%,
+            rgba(9, 0, 17, 1) 100%
+          );
+        border: 0;
         box-shadow:
-          0 28px 70px rgba(0, 0, 0, 0.50),
-          0 0 56px rgba(208, 0, 139, 0.105),
-          inset 0 1px 0 rgba(255, 250, 240, 0.08),
-          inset 0 -1px 0 rgba(255, 250, 240, 0.025);
+          0 30px 72px rgba(0, 0, 0, 0.54),
+          inset 0 1px 0 rgba(255, 250, 240, 0.075);
       }
 
       html[data-theme="dark"] .card::before {
@@ -981,11 +1098,11 @@
         inset: -42%;
         z-index: 1;
         background:
-          radial-gradient(circle at 36% 26%, rgba(255, 196, 0, 0.105), transparent 24%),
-          radial-gradient(circle at 68% 58%, rgba(208, 0, 139, 0.145), transparent 30%),
-          radial-gradient(circle at 26% 82%, rgba(102, 62, 180, 0.115), transparent 33%);
-        filter: blur(28px);
-        opacity: 0.62;
+          radial-gradient(circle at 36% 26%, rgba(255, 196, 0, 0.090), transparent 24%),
+          radial-gradient(circle at 68% 58%, rgba(208, 0, 139, 0.120), transparent 30%),
+          radial-gradient(circle at 26% 82%, rgba(102, 62, 180, 0.080), transparent 33%);
+        filter: blur(30px);
+        opacity: 0.54;
         pointer-events: none;
         animation: cardAuraMove 16s ease-in-out infinite alternate;
       }
@@ -996,8 +1113,8 @@
         inset: 0;
         z-index: 1;
         background:
-          linear-gradient(180deg, rgba(255, 250, 240, 0.045), transparent 36%, transparent 100%),
-          linear-gradient(145deg, transparent 0%, transparent 38%, rgba(255, 196, 0, 0.024) 51%, transparent 64%, transparent 100%);
+          linear-gradient(180deg, rgba(255, 250, 240, 0.040), transparent 34%, transparent 78%, rgba(3, 0, 8, 0.14) 100%),
+          linear-gradient(145deg, transparent 0%, transparent 38%, rgba(255, 196, 0, 0.018) 51%, transparent 64%, transparent 100%);
         pointer-events: none;
       }
 
@@ -1025,11 +1142,6 @@
 
       html[data-theme="dark"] .themeToggle:hover {
         background: rgba(18, 0, 31, 0.72);
-      }
-
-      html[data-theme="dark"] .profileFrame {
-        background:
-          linear-gradient(135deg, #ffc400 0%, #ffe89a 22%, #d0008b 58%, #5d35a8 100%);
       }
 
       html[data-theme="dark"] .profile {
@@ -1204,6 +1316,46 @@
           height: 110px;
         }
 
+        .profileDots span {
+          width: 6px;
+          height: 6px;
+          margin: -3px 0 0 -3px;
+        }
+
+        @keyframes dotAssemble {
+          0% {
+            opacity: 0;
+            transform:
+              rotate(calc(var(--angle) - 38deg))
+              translate(32px)
+              scale(0.2);
+          }
+
+          42% {
+            opacity: 1;
+            transform:
+              rotate(var(--angle))
+              translate(64px)
+              scale(1);
+          }
+
+          72% {
+            opacity: 0.95;
+            transform:
+              rotate(var(--angle))
+              translate(58px)
+              scale(0.85);
+          }
+
+          100% {
+            opacity: 0;
+            transform:
+              rotate(var(--angle))
+              translate(58px)
+              scale(0.25);
+          }
+        }
+
         h1 {
           font-size: 36px;
         }
@@ -1239,7 +1391,26 @@
           <span class="themeLabel">Dark</span>
         </button>
 
-        <div class="profileFrame" aria-hidden="false">
+        <div class="profileFrame">
+          <span class="profileDots" aria-hidden="true">
+            <span style="--angle: 0deg; --delay: 0.00s"></span>
+            <span style="--angle: 22.5deg; --delay: 0.03s"></span>
+            <span style="--angle: 45deg; --delay: 0.06s"></span>
+            <span style="--angle: 67.5deg; --delay: 0.09s"></span>
+            <span style="--angle: 90deg; --delay: 0.12s"></span>
+            <span style="--angle: 112.5deg; --delay: 0.15s"></span>
+            <span style="--angle: 135deg; --delay: 0.18s"></span>
+            <span style="--angle: 157.5deg; --delay: 0.21s"></span>
+            <span style="--angle: 180deg; --delay: 0.24s"></span>
+            <span style="--angle: 202.5deg; --delay: 0.27s"></span>
+            <span style="--angle: 225deg; --delay: 0.30s"></span>
+            <span style="--angle: 247.5deg; --delay: 0.33s"></span>
+            <span style="--angle: 270deg; --delay: 0.36s"></span>
+            <span style="--angle: 292.5deg; --delay: 0.39s"></span>
+            <span style="--angle: 315deg; --delay: 0.42s"></span>
+            <span style="--angle: 337.5deg; --delay: 0.45s"></span>
+          </span>
+
           <img
             id="profileImage"
             class="profile"
