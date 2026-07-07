@@ -1012,10 +1012,10 @@
 
       html[data-theme="dark"] body::before {
         background:
-          radial-gradient(circle, rgba(255, 250, 240, 0.10) 1px, transparent 2px),
-          radial-gradient(circle at 50% 0%, rgba(255, 196, 0, 0.06) 0%, transparent 42%);
-        background-size: 42px 42px, 100% 100%;
-        opacity: 0.85;
+          radial-gradient(circle at 50% 0%, rgba(255, 196, 0, 0.06) 0%, transparent 42%),
+          linear-gradient(115deg, transparent 0%, transparent 38%, rgba(208, 0, 139, 0.055) 38.4%, transparent 39.4%, transparent 100%);
+        background-size: 100% 100%, 100% 100%;
+        opacity: 0.72;
         mask-image: radial-gradient(circle at center, black 0%, transparent 78%);
       }
 
@@ -1074,7 +1074,6 @@
         pointer-events: none;
       }
 
-      html[data-theme="dark"] .themeToggle,
       html[data-theme="dark"] .profile,
       html[data-theme="dark"] h1,
       html[data-theme="dark"] .bio,
@@ -1087,6 +1086,10 @@
       }
 
       html[data-theme="dark"] .themeToggle {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 3;
         background: rgba(18, 0, 31, 0.52);
         border: 0;
         color: #ffe89a;
@@ -1098,11 +1101,14 @@
       }
 
       html[data-theme="dark"] .profile {
-        border: 3px solid #ffc400;
+        border: 4px solid transparent;
+        background:
+          linear-gradient(#16041f, #16041f) padding-box,
+          linear-gradient(135deg, #ffc400 0%, #ffe89a 24%, #d0008b 58%, #6f4bb8 100%) border-box;
         box-shadow:
-          0 0 0 6px rgba(208, 0, 139, 0.18),
+          0 0 0 6px rgba(208, 0, 139, 0.15),
           0 16px 34px rgba(0, 0, 0, 0.42),
-          0 0 28px rgba(255, 196, 0, 0.16);
+          0 0 28px rgba(255, 196, 0, 0.15);
       }
 
       html[data-theme="dark"] h1 {
@@ -1205,6 +1211,12 @@
         }
 
         .themeToggle {
+          top: 14px;
+          right: 14px;
+          padding: 7px 11px;
+        }
+
+        html[data-theme="dark"] .themeToggle {
           top: 14px;
           right: 14px;
           padding: 7px 11px;
