@@ -810,12 +810,24 @@
       .legalFooter {
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
-        gap: 6px;
+        column-gap: 6px;
+        row-gap: 6px;
         margin: 18px auto 0;
         color: rgba(58, 36, 24, 0.52);
         font-size: 11px;
         font-weight: 900;
+        line-height: 1;
+      }
+
+      .legalFooter > * {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 24px;
+        line-height: 1;
+        vertical-align: middle;
       }
 
       .legalButton {
@@ -824,8 +836,9 @@
         background: transparent;
         color: inherit;
         font: inherit;
+        line-height: 1;
         cursor: pointer;
-        padding: 2px 3px;
+        padding: 0 3px;
         text-decoration: underline;
         text-decoration-thickness: 2px;
         text-underline-offset: 3px;
@@ -833,6 +846,12 @@
 
       .legalDivider {
         opacity: 0.48;
+        padding: 0 1px;
+      }
+
+      .legalAge {
+        padding: 0 1px;
+        text-decoration: none;
       }
 
       .legalOverlay {
@@ -1351,7 +1370,7 @@
           Privacy / Datenschutz
         </button>
         <span class="legalDivider">•</span>
-        <span>18+</span>
+        <span class="legalAge">18+</span>
       </footer>
     </main>
 
