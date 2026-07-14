@@ -6,7 +6,7 @@
 
     <meta
       name="description"
-      content="Kyu Crush — exclusive content, daily glow, teasers, private updates, and sweet links."
+      content="Kyu Crush — quick snaps, daily glow, teasers, private updates, and sweet links."
     />
     <meta id="themeColorMeta" name="theme-color" content="#fff3d6" />
 
@@ -46,10 +46,10 @@
         onlyfans: {
           name: "onlyfans",
           medium: "creator_platform_button",
-          campaign: "onlyfans_exclusive_content",
+          campaign: "onlyfans_full_videos",
           content: "main_links_top",
           area: "main_area",
-          type: "creator_platform",
+          type: "monetization",
           platform: "onlyfans"
         },
         instagram: {
@@ -193,14 +193,7 @@
           });
         }
 
-        if (tracking.type === "creator_platform") {
-          trackEvent("creator_platform_click", {
-            platform: tracking.platform,
-            link_name: tracking.name,
-            link_url: linkUrl,
-            area_name: tracking.area
-          });
-
+        if (tracking.type === "monetization") {
           trackEvent("monetization_click", {
             platform: tracking.platform,
             link_name: tracking.name,
@@ -463,6 +456,8 @@
       :root {
         --cream: #fff3d6;
         --vanilla: #ffe8a3;
+        --gold: #ffc400;
+        --gold-soft: #ffe89a;
         --peach: #ff9f7a;
         --bubblegum: #ff4fa3;
         --cherry: #ff3b5f;
@@ -497,6 +492,29 @@
 
         100% {
           transform: translate3d(-1%, 2%, 0) scale(1.09);
+        }
+      }
+
+      @keyframes onlyfansPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+            0 0 0 1px rgba(255, 196, 0, 0.18),
+            0 12px 24px rgba(58, 36, 24, 0.18),
+            0 0 24px rgba(50, 165, 230, 0.18),
+            0 0 16px rgba(255, 196, 0, 0.14);
+        }
+
+        50% {
+          transform: scale(1.014);
+          box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.24) inset,
+            0 0 0 1px rgba(255, 196, 0, 0.30),
+            0 14px 28px rgba(58, 36, 24, 0.22),
+            0 0 34px rgba(50, 165, 230, 0.30),
+            0 0 22px rgba(255, 196, 0, 0.22);
         }
       }
 
@@ -703,7 +721,8 @@
           transform 0.18s ease,
           opacity 0.18s ease,
           box-shadow 0.22s ease,
-          background 0.22s ease;
+          background 0.22s ease,
+          filter 0.22s ease;
         transform: translateZ(0);
         isolation: isolate;
       }
@@ -781,40 +800,25 @@
         font-size: 11px;
         font-weight: 800;
         letter-spacing: 0.07em;
-        opacity: 0.78;
+        opacity: 0.82;
         text-transform: uppercase;
       }
 
       .onlyfans {
-        background: linear-gradient(
-          135deg,
-          #28b7df 0%,
-          #596bdc 52%,
-          #a044bd 100%
-        );
-        color: #ffffff;
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
-          0 0 30px rgba(102, 83, 218, 0.28),
-          0 12px 24px rgba(77, 41, 128, 0.22);
+        background:
+          linear-gradient(135deg, #f2c33d 0%, #ffd96c 16%, #2c9ce6 52%, #8141d5 100%);
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+        animation: onlyfansPulse 2.8s ease-in-out infinite;
       }
 
       .onlyfans:hover {
-        transform: translateY(-2px) scale(1.03);
-        background: linear-gradient(
-          135deg,
-          #37c5eb 0%,
-          #6878e8 52%,
-          #b34fc9 100%
-        );
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.26) inset,
-          0 0 38px rgba(116, 91, 226, 0.36),
-          0 15px 28px rgba(77, 41, 128, 0.28);
+        transform: translateY(-2px) scale(1.026);
+        filter: brightness(1.04);
       }
 
       .instagram {
-        background: linear-gradient(135deg, #ff9f7a, #ff4fa3);
+        background: linear-gradient(135deg, #e000a6 0%, #a826c4 52%, #5e2c9d 100%);
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.18) inset,
           0 0 30px rgba(255, 79, 163, 0.28),
@@ -826,12 +830,11 @@
       }
 
       .twitter {
-        background: linear-gradient(135deg, #332238 0%, #6f466f 100%);
+        background: linear-gradient(135deg, #241033, #06000d 100%);
       }
 
       .telegram {
-        background: linear-gradient(135deg, #79c8ef 0%, #9b8be8 100%);
-        color: #2a1737;
+        background: linear-gradient(135deg, #6d35b8 0%, #4a2386 100%);
       }
 
       .footer {
@@ -1149,32 +1152,16 @@
       }
 
       html[data-theme="dark"] .onlyfans {
-        background: linear-gradient(
-          135deg,
-          #189ecb 0%,
-          #5d4dca 52%,
-          #8d2ca7 100%
-        );
+        background:
+          linear-gradient(135deg, #e6b72f 0%, #ffd86b 16%, #279ae8 50%, #7c3fd3 100%);
         color: #ffffff;
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.11) inset,
-          inset 0 1px 0 rgba(255, 255, 255, 0.16),
-          0 0 34px rgba(116, 72, 205, 0.25),
-          0 12px 26px rgba(0, 0, 0, 0.40);
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+        animation: onlyfansPulse 2.8s ease-in-out infinite;
       }
 
       html[data-theme="dark"] .onlyfans:hover {
-        background: linear-gradient(
-          135deg,
-          #24acd8 0%,
-          #6a59da 52%,
-          #a33abe 100%
-        );
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.14) inset,
-          inset 0 1px 0 rgba(255, 255, 255, 0.18),
-          0 0 42px rgba(132, 82, 222, 0.34),
-          0 15px 30px rgba(0, 0, 0, 0.46);
+        background:
+          linear-gradient(135deg, #efc546 0%, #ffe48e 16%, #2ea4ef 50%, #8747dd 100%);
       }
 
       html[data-theme="dark"] .instagram {
@@ -1183,21 +1170,21 @@
       }
 
       html[data-theme="dark"] .twitter {
-        background: linear-gradient(135deg, #25142f 0%, #08050d 100%);
+        background: linear-gradient(135deg, #211034, #09000f);
         color: #ffffff;
       }
 
       html[data-theme="dark"] .twitter:hover {
-        background: linear-gradient(135deg, #321a42 0%, #100718 100%);
+        background: linear-gradient(135deg, #2b144a, #11001f);
       }
 
       html[data-theme="dark"] .telegram {
-        background: linear-gradient(135deg, #63349e 0%, #48227d 54%, #301451 100%);
+        background: linear-gradient(135deg, #6d35b8, #43206f);
         color: #ffffff;
       }
 
       html[data-theme="dark"] .telegram:hover {
-        background: linear-gradient(135deg, #7340b2 0%, #552993 54%, #391860 100%);
+        background: linear-gradient(135deg, #7841c3, #4d257b);
       }
 
       html[data-theme="dark"] .footer,
@@ -1263,6 +1250,10 @@
           animation-duration: 0.001ms !important;
           animation-iteration-count: 1 !important;
           scroll-behavior: auto !important;
+        }
+
+        .onlyfans {
+          animation: none !important;
         }
       }
 
@@ -1536,11 +1527,11 @@
 
           <h3>Google Analytics</h3>
           <p>
-            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, ausgehende Link-Klicks, Social-Klicks, Button-Impressionen, Theme-Nutzung und Zeit bis zum ersten Klick.
+            Diese Website verwendet Google Analytics. Dabei können Informationen über die Nutzung dieser Website verarbeitet werden, zum Beispiel Seitenaufrufe, ausgehende Link-Klicks, Social-Klicks, Monetization-Klicks, Button-Impressionen, Theme-Nutzung und Zeit bis zum ersten Klick.
           </p>
 
           <p lang="en">
-            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, outbound link clicks, social clicks, button impressions, theme usage and time to first click.
+            This website uses Google Analytics. Information about the use of this website may be processed, for example page views, outbound link clicks, social clicks, monetization clicks, button impressions, theme usage and time to first click.
           </p>
 
           <p>
